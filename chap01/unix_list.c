@@ -7,14 +7,14 @@
 
 int main() {
 
-    struct ifaddrs *addresses, *address;
+    struct ifaddrs *addresses;
 
     if (getifaddrs(&addresses) == -1) {
         printf("getifaddrs call failed\n");
         return -1;
     }
 
-    address = addresses;
+    struct ifaddrs *address = addresses;
     while(address) {
         int family = address->ifa_addr->sa_family;
         if (family == AF_INET || family == AF_INET6) {
@@ -35,6 +35,5 @@ int main() {
 
 
     freeifaddrs(addresses);
-
     return 0;
 }
