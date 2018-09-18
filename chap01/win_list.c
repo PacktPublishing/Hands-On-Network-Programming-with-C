@@ -9,10 +9,10 @@
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
-
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
-
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -55,7 +55,8 @@ int main() {
             return -1;
         }
 
-        int r = GetAdaptersAddresses(AF_UNSPEC, GAA_FLAG_INCLUDE_PREFIX, 0, addresses, &asize);
+        int r = GetAdaptersAddresses(AF_UNSPEC, GAA_FLAG_INCLUDE_PREFIX, 0,
+                addresses, &asize);
         if (r == ERROR_BUFFER_OVERFLOW) {
             printf("GetAdaptersAddresses wants %ld bytes.\n", asize);
             free(addresses);
@@ -76,11 +77,13 @@ int main() {
 
         PIP_ADAPTER_UNICAST_ADDRESS add = address->FirstUnicastAddress;
         while (add) {
-            printf("\t%s", add->Address.lpSockaddr->sa_family == AF_INET ? "IPv4" : "IPv6");
+            printf("\t%s", add->Address.lpSockaddr->sa_family == AF_INET ?
+                    "IPv4" : "IPv6");
 
             char ap[100];
 
-            getnameinfo(add->Address.lpSockaddr, add->Address.iSockaddrLength, ap, sizeof(ap), 0, 0, NI_NUMERICHOST);
+            getnameinfo(add->Address.lpSockaddr, add->Address.iSockaddrLength,
+                    ap, sizeof(ap), 0, 0, NI_NUMERICHOST);
             printf("\t%s\n", ap);
 
             add = add->Next;
