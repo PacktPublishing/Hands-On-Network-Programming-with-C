@@ -18,3 +18,15 @@ rm unix_list.cpp
 echo
 echo
 cd ..
+
+
+cd chap02
+echo
+cp sock_init.c sock_init.cpp
+${CC} -Wall -Wextra sock_init.c -o sock_init; ./sock_init; rm sock_init
+echo
+${CC} -Wall -Wextra sock_init.cpp -o sock_init; ./sock_init; rm sock_init
+rm sock_init.cpp
+echo
+echo
+cd ..

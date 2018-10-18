@@ -33,3 +33,17 @@ win_list.exe
 del win_list.exe
 del win_list.cpp
 cd ..
+
+
+
+cd chap01
+copy sock_init.c sock_init.cpp
+echo "%CC%"
+%CC% sock_init.c -o sock_init.exe %CEXTRA%
+sock_init.exe
+del sock_init.exe
+%CC% sock_init.cpp -o sock_init.exe %CEXTRA%
+sock_init.exe
+del sock_init.exe
+del sock_init.cpp
+cd ..
