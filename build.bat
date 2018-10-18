@@ -36,7 +36,7 @@ cd ..
 
 
 
-cd chap01
+cd chap02
 copy sock_init.c sock_init.cpp
 echo "%CC%"
 %CC% sock_init.c -o sock_init.exe %CEXTRA%
