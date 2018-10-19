@@ -47,3 +47,29 @@ sock_init.exe
 del sock_init.exe
 del sock_init.cpp
 cd ..
+
+
+cd chap02
+copy time_console.c time_console.cpp
+echo "%CC%"
+%CC% time_console.c -o time_console.exe %CEXTRA%
+time_console.exe
+del time_console.exe
+%CC% time_console.cpp -o time_console.exe %CEXTRA%
+time_console.exe
+del time_console.exe
+del time_console.cpp
+cd ..
+
+
+cd chap02
+copy time_server.c time_server.cpp
+echo "%CC%"
+%CC% time_server.c -o time_server.exe %CEXTRA%
+time_server.exe
+del time_server.exe
+%CC% time_server.cpp -o time_server.exe %CEXTRA%
+time_server.exe
+del time_server.exe
+del time_server.cpp
+cd ..
