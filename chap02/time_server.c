@@ -23,7 +23,11 @@
  */
 
 #if defined(_WIN32)
+#ifndef _WIN32_WINNT
+#define _WIN32_WINNT 0x0600
+#endif
 #include <winsock2.h>
+#include <ws2tcpip.h>
 #pragma comment(lib, "ws2_32.lib")
 
 #else
@@ -40,6 +44,7 @@
 #define ISVALIDSOCKET(s) ((s) != INVALID_SOCKET)
 #define CLOSESOCKET(s) closesocket(s)
 typedef int socklen_t;
+
 #else
 #define ISVALIDSOCKET(s) ((s) >= 0)
 #define CLOSESOCKET(s) close(s)
@@ -60,23 +65,27 @@ int main() {
     }
 #endif
 
+    printf("Configuring local address...\n");
+    struct addrinfo hints;
+    memset(&hints, 0, sizeof(hints));
+    hints.ai_family = AF_INET6;
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_flags = AI_PASSIVE;
+
+    struct addrinfo *bind_address;
+    getaddrinfo(0, "8080", &hints, &bind_address);
+
+
     printf("Creating socket...\n");
     SOCKET socket_listen;
-    socket_listen = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    socket_listen = socket(bind_address->ai_family, bind_address->ai_socktype, bind_address->ai_protocol);
     if (!ISVALIDSOCKET(socket_listen)) {
         fprintf(stderr, "socket() failed.\n");
         return 1;
     }
 
-
     printf("Binding socket to local address...\n");
-    struct sockaddr_in bind_address;
-    memset(&bind_address, 0, sizeof(bind_address));
-    bind_address.sin_family = AF_INET;
-    bind_address.sin_addr.s_addr = htonl(INADDR_ANY);
-    bind_address.sin_port = htons(8080);
-
-    if (bind(socket_listen, (struct sockaddr*) &bind_address, sizeof(bind_address)) < 0) {
+    if (bind(socket_listen, bind_address->ai_addr, bind_address->ai_addrlen)) {
         fprintf(stderr, "bind() failed.\n");
         return 1;
     }
@@ -88,11 +97,12 @@ int main() {
     }
 
     printf("Waiting for connection...\n");
-    struct sockaddr_in client_address;
+    struct sockaddr_storage client_address;
     socklen_t client_len = sizeof(client_address);
     SOCKET socket_client = accept(socket_listen, (struct sockaddr*) &client_address, &client_len);
     if (!ISVALIDSOCKET(socket_client)) {
         fprintf(stderr, "accept() failed.\n");
+        printf("%d", WSAGetLastError());
         return 1;
     }
 
