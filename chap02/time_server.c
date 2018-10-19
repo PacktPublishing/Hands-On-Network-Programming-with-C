@@ -37,6 +37,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <unistd.h>
+#include <errno.h>
 
 #endif
 
@@ -44,12 +45,13 @@
 #if defined(_WIN32)
 #define ISVALIDSOCKET(s) ((s) != INVALID_SOCKET)
 #define CLOSESOCKET(s) closesocket(s)
-typedef int socklen_t;
+#define GETSOCKETERRNO() (WSAGetLastError())
 
 #else
 #define ISVALIDSOCKET(s) ((s) >= 0)
 #define CLOSESOCKET(s) close(s)
 #define SOCKET int
+#define GETSOCKETERRNO() (errno)
 #endif
 
 
@@ -86,7 +88,7 @@ int main() {
     socket_listen = socket(bind_address->ai_family,
             bind_address->ai_socktype, bind_address->ai_protocol);
     if (!ISVALIDSOCKET(socket_listen)) {
-        fprintf(stderr, "socket() failed.\n");
+        fprintf(stderr, "socket() failed. (%d)\n", GETSOCKETERRNO());
         return 1;
     }
 
@@ -94,14 +96,14 @@ int main() {
     printf("Binding socket to local address...\n");
     if (bind(socket_listen,
                 bind_address->ai_addr, bind_address->ai_addrlen)) {
-        fprintf(stderr, "bind() failed.\n");
+        fprintf(stderr, "bind() failed. (%d)\n", GETSOCKETERRNO());
         return 1;
     }
 
 
     printf("Listening...\n");
     if (listen(socket_listen, 10) < 0) {
-        fprintf(stderr, "listen() failed.\n");
+        fprintf(stderr, "listen() failed. (%d)\n", GETSOCKETERRNO());
         return 1;
     }
 
@@ -112,7 +114,7 @@ int main() {
     SOCKET socket_client = accept(socket_listen,
             (struct sockaddr*) &client_address, &client_len);
     if (!ISVALIDSOCKET(socket_client)) {
-        fprintf(stderr, "accept() failed.\n");
+        fprintf(stderr, "accept() failed. (%d)\n", GETSOCKETERRNO());
         return 1;
     }
 
