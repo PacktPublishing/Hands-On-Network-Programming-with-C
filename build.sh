@@ -30,3 +30,27 @@ rm sock_init.cpp
 echo
 echo
 cd ..
+
+
+cd chap02
+echo
+cp time_console.c time_console.cpp
+${CC} -Wall -Wextra time_console.c -o time_console; ./time_console; rm time_console
+echo
+${CC} -Wall -Wextra time_console.cpp -o time_console; ./time_console; rm time_console
+rm time_console.cpp
+echo
+echo
+cd ..
+
+
+cd chap02
+echo
+cp time_server.c time_server.cpp
+${CC} -Wall -Wextra time_server.c -o time_server; timeout 5s ./time_server; rm time_server
+echo
+${CC} -Wall -Wextra time_server.cpp -o time_server; timeout 5s ./time_server; rm time_server
+rm time_server.cpp
+echo
+echo
+cd ..

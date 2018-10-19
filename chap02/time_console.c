@@ -22,36 +22,15 @@
  * SOFTWARE.
  */
 
-#if defined(_WIN32)
-#include <winsock2.h>
-#pragma comment(lib, "ws2_32.lib")
-
-#else
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <netdb.h>
-
-#endif
-
 #include <stdio.h>
+#include <time.h>
 
-int main() {
+int main()
+{
+    time_t timer;
+    time(&timer);
 
-#if defined(_WIN32)
-    WSADATA d;
-    if (WSAStartup(MAKEWORD(2, 2), &d)) {
-        fprintf(stderr, "Failed to initialize.\n");
-        return 1;
-    }
-#endif
-
-    printf("Ready to use socket API.\n");
-
-#if defined(_WIN32)
-    WSACleanup();
-#endif
+    printf ("Local time is: %s", ctime(&timer));
 
     return 0;
 }
