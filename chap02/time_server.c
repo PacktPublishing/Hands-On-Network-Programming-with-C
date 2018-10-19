@@ -101,18 +101,19 @@ int main() {
     printf("Reading request...\n");
     char request[1024];
     int bytes_received = recv(socket_client, request, 1024, 0);
-    printf("%.*s", bytes_received, request);
+    printf("Received %d bytes.\n", bytes_received);
+    //printf("%.*s", bytes_received, request);
 
     printf("Sending data...\n");
     const char *response = "HTTP/1.1 200 OK\r\nConnection: close\r\nContent-Type: text/plain\r\n\r\nLocal time is: ";
     int bytes_sent = send(socket_client, response, strlen(response), 0);
-    printf("Sent %d of %d bytes.\n", bytes_sent, strlen(response));
+    printf("Sent %d of %lu bytes.\n", bytes_sent, strlen(response));
 
     time_t timer;
     time(&timer);
     char *time_msg = ctime(&timer);
     bytes_sent = send(socket_client, time_msg, strlen(time_msg), 0);
-    printf("Sent %d of %d bytes.\n", bytes_sent, strlen(time_msg));
+    printf("Sent %d of %lu bytes.\n", bytes_sent, strlen(time_msg));
 
 
     printf("Closing connection...\n");
