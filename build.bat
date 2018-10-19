@@ -66,10 +66,10 @@ cd chap02
 copy time_server.c time_server.cpp
 echo "%CC%"
 %CC% time_server.c -o time_server.exe %CEXTRA%
-time_server.exe
+REM time_server.exe
 del time_server.exe
 %CC% time_server.cpp -o time_server.exe %CEXTRA%
-time_server.exe
+REM time_server.exe
 del time_server.exe
 del time_server.cpp
 cd ..
