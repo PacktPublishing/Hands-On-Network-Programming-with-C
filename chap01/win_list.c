@@ -77,12 +77,14 @@ int main() {
 
         PIP_ADAPTER_UNICAST_ADDRESS address = adapter->FirstUnicastAddress;
         while (address) {
-            printf("\t%s", address->Address.lpSockaddr->sa_family == AF_INET ?
+            printf("\t%s",
+                    address->Address.lpSockaddr->sa_family == AF_INET ?
                     "IPv4" : "IPv6");
 
             char ap[100];
 
-            getnameinfo(address->Address.lpSockaddr, address->Address.iSockaddrLength,
+            getnameinfo(address->Address.lpSockaddr,
+                    address->Address.iSockaddrLength,
                     ap, sizeof(ap), 0, 0, NI_NUMERICHOST);
             printf("\t%s\n", ap);
 
