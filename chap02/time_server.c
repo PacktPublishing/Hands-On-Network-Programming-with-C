@@ -113,7 +113,6 @@ int main() {
             (struct sockaddr*) &client_address, &client_len);
     if (!ISVALIDSOCKET(socket_client)) {
         fprintf(stderr, "accept() failed.\n");
-        printf("%d", WSAGetLastError());
         return 1;
     }
 
@@ -134,10 +133,11 @@ int main() {
 
 
     printf("Sending response...\n");
-    const char *response = "HTTP/1.1 200 OK\r\n\
-Connection: close\r\n\
-Content-Type: text/plain\r\n\r\n\
-Local time is: ";
+    const char *response =
+        "HTTP/1.1 200 OK\r\n"
+        "Connection: close\r\n"
+        "Content-Type: text/plain\r\n\r\n"
+        "Local time is: ";
     int bytes_sent = send(socket_client, response, strlen(response), 0);
     printf("Sent %d of %d bytes.\n", bytes_sent, (int)strlen(response));
 
