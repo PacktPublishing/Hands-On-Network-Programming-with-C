@@ -73,3 +73,16 @@ REM time_server.exe
 del time_server.exe
 del time_server.cpp
 cd ..
+
+
+cd chap03
+copy tcp_client.c tcp_client.cpp
+echo "%CC%"
+%CC% tcp_client.c -o tcp_client.exe %CEXTRA%
+tcp_client.exe
+del tcp_client.exe
+%CC% tcp_client.cpp -o tcp_client.exe %CEXTRA%
+tcp_client.exe
+del tcp_client.exe
+del tcp_client.cpp
+cd ..

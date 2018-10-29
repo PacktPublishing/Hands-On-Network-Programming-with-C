@@ -54,3 +54,15 @@ rm time_server.cpp
 echo
 echo
 cd ..
+
+
+cd chap03
+echo
+cp tcp_client.c tcp_client.cpp
+${CC} -Wall -Wextra tcp_client.c -o tcp_client; ./tcp_client; rm tcp_client
+echo
+${CC} -Wall -Wextra tcp_client.cpp -o tcp_client; ./tcp_client; rm tcp_client
+rm tcp_client.cpp
+echo
+echo
+cd ..
