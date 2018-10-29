@@ -79,3 +79,27 @@ rm tcp_serve_toupper.cpp
 echo
 echo
 cd ..
+
+
+cd chap03
+echo
+cp tcp_serve_chat.c tcp_serve_chat.cpp
+${CC} -Wall -Wextra tcp_serve_chat.c -o tcp_serve_chat; timeout 5s ./tcp_serve_chat; rm tcp_serve_chat
+echo
+${CC} -Wall -Wextra tcp_serve_chat.cpp -o tcp_serve_chat; timeout 5s ./tcp_serve_chat; rm tcp_serve_chat
+rm tcp_serve_chat.cpp
+echo
+echo
+cd ..
+
+
+cd chap03
+echo
+cp tcp_serve_toupper_fork.c tcp_serve_toupper_fork.cpp
+${CC} -Wall -Wextra tcp_serve_toupper_fork.c -o tcp_serve_toupper_fork; timeout 5s ./tcp_serve_toupper_fork; rm tcp_serve_toupper_fork
+echo
+${CC} -Wall -Wextra tcp_serve_toupper_fork.cpp -o tcp_serve_toupper_fork; timeout 5s ./tcp_serve_toupper_fork; rm tcp_serve_toupper_fork
+rm tcp_serve_toupper_fork.cpp
+echo
+echo
+cd ..
