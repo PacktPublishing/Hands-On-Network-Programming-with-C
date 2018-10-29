@@ -66,3 +66,16 @@ rm tcp_client.cpp
 echo
 echo
 cd ..
+
+
+
+cd chap03
+echo
+cp tcp_serve_toupper.c tcp_serve_toupper.cpp
+${CC} -Wall -Wextra tcp_serve_toupper.c -o tcp_serve_toupper; timeout 5s ./tcp_serve_toupper; rm tcp_serve_toupper
+echo
+${CC} -Wall -Wextra tcp_serve_toupper.cpp -o tcp_serve_toupper; timeout 5s ./tcp_serve_toupper; rm tcp_serve_toupper
+rm tcp_serve_toupper.cpp
+echo
+echo
+cd ..

@@ -86,3 +86,16 @@ tcp_client.exe
 del tcp_client.exe
 del tcp_client.cpp
 cd ..
+
+
+cd chap03
+copy tcp_serve_toupper.c tcp_serve_toupper.cpp
+echo "%CC%"
+%CC% tcp_serve_toupper.c -o tcp_serve_toupper.exe %CEXTRA%
+REM tcp_serve_toupper.exe
+del tcp_serve_toupper.exe
+%CC% tcp_serve_toupper.cpp -o tcp_serve_toupper.exe %CEXTRA%
+REM tcp_serve_toupper.exe
+del tcp_serve_toupper.exe
+del tcp_serve_toupper.cpp
+cd ..
