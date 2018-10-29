@@ -121,11 +121,15 @@ int main() {
                     }
 
                     int j;
-                    for (j = 0; j < bytes_received; ++j)
-                        read[j] = toupper(read[j]);
-                    send(i, read, bytes_received, 0);
+                    for (j = 1; j <= max_socket; ++j) {
+                        if (FD_ISSET(j, &master)) {
+                            if (j == socket_listen || j == i)
+                                continue;
+                            else
+                                send(j, read, bytes_received, 0);
+                        }
+                    }
                 }
-
             } //if FD_ISSET
         } //for i to max_socket
     } //while(1)

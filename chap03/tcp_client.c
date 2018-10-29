@@ -90,7 +90,7 @@ int main(int argc, char *argv[]) {
         FD_ZERO(&reads);
         FD_SET(socket_peer, &reads);
 #if !defined(_WIN32)
-        FD_SET(fileno(stdin), &reads);
+        FD_SET(0, &reads);
 #endif
 
         struct timeval timeout;
@@ -116,7 +116,7 @@ int main(int argc, char *argv[]) {
 #if defined(_WIN32)
         if(_kbhit()) {
 #else
-        if(FD_ISSET(fileno(stdin), &reads)) {
+        if(FD_ISSET(0, &reads)) {
 #endif
             char read[4096];
             if (!fgets(read, 4096, stdin)) break;
@@ -126,18 +126,14 @@ int main(int argc, char *argv[]) {
         }
     } //end while(1)
 
-
     printf("Closing socket...\n");
     CLOSESOCKET(socket_peer);
-
 
 #if defined(_WIN32)
     WSACleanup();
 #endif
 
-
     printf("Finished.\n");
-
     return 0;
 }
 
