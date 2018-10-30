@@ -90,6 +90,7 @@ int main() {
         int pid = fork();
 
         if (pid == 0) { //child process
+            CLOSESOCKET(socket_listen);
             while(1) {
                 char read[1024];
                 int bytes_received = recv(socket_client, read, 1024, 0);
