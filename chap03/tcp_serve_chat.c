@@ -120,7 +120,7 @@ int main() {
                         continue;
                     }
 
-                    int j;
+                    SOCKET j;
                     for (j = 1; j <= max_socket; ++j) {
                         if (FD_ISSET(j, &master)) {
                             if (j == socket_listen || j == i)

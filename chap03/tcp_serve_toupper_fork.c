@@ -101,7 +101,7 @@ int main() {
                 int j;
                 for (j = 0; j < bytes_received; ++j)
                     read[j] = toupper(read[j]);
-                int bytes_sent = send(socket_client, read, bytes_received, 0);
+                send(socket_client, read, bytes_received, 0);
             }
         }
 
