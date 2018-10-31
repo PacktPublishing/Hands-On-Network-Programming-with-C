@@ -73,3 +73,42 @@ REM time_server.exe
 del time_server.exe
 del time_server.cpp
 cd ..
+
+
+cd chap03
+copy tcp_client.c tcp_client.cpp
+echo "%CC%"
+%CC% tcp_client.c -o tcp_client.exe %CEXTRA%
+tcp_client.exe
+del tcp_client.exe
+%CC% tcp_client.cpp -o tcp_client.exe %CEXTRA%
+tcp_client.exe
+del tcp_client.exe
+del tcp_client.cpp
+cd ..
+
+
+cd chap03
+copy tcp_serve_toupper.c tcp_serve_toupper.cpp
+echo "%CC%"
+%CC% tcp_serve_toupper.c -o tcp_serve_toupper.exe %CEXTRA%
+REM tcp_serve_toupper.exe
+del tcp_serve_toupper.exe
+%CC% tcp_serve_toupper.cpp -o tcp_serve_toupper.exe %CEXTRA%
+REM tcp_serve_toupper.exe
+del tcp_serve_toupper.exe
+del tcp_serve_toupper.cpp
+cd ..
+
+
+cd chap03
+copy tcp_serve_chat.c tcp_serve_chat.cpp
+echo "%CC%"
+%CC% tcp_serve_chat.c -o tcp_serve_chat.exe %CEXTRA%
+REM tcp_serve_chat.exe
+del tcp_serve_chat.exe
+%CC% tcp_serve_chat.cpp -o tcp_serve_chat.exe %CEXTRA%
+REM tcp_serve_chat.exe
+del tcp_serve_chat.exe
+del tcp_serve_chat.cpp
+cd ..

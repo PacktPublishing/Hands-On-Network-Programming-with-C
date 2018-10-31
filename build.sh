@@ -54,3 +54,52 @@ rm time_server.cpp
 echo
 echo
 cd ..
+
+
+cd chap03
+echo
+cp tcp_client.c tcp_client.cpp
+${CC} -Wall -Wextra tcp_client.c -o tcp_client; ./tcp_client; rm tcp_client
+echo
+${CC} -Wall -Wextra tcp_client.cpp -o tcp_client; ./tcp_client; rm tcp_client
+rm tcp_client.cpp
+echo
+echo
+cd ..
+
+
+cd chap03
+echo
+cp tcp_serve_toupper.c tcp_serve_toupper.cpp
+${CC} -Wall -Wextra tcp_serve_toupper.c -o tcp_serve_toupper; timeout 5s ./tcp_serve_toupper; rm tcp_serve_toupper
+echo
+${CC} -Wall -Wextra tcp_serve_toupper.cpp -o tcp_serve_toupper; timeout 5s ./tcp_serve_toupper; rm tcp_serve_toupper
+rm tcp_serve_toupper.cpp
+echo
+echo
+cd ..
+
+
+cd chap03
+echo
+cp tcp_serve_chat.c tcp_serve_chat.cpp
+${CC} -Wall -Wextra tcp_serve_chat.c -o tcp_serve_chat; timeout 5s ./tcp_serve_chat; rm tcp_serve_chat
+echo
+${CC} -Wall -Wextra tcp_serve_chat.cpp -o tcp_serve_chat; timeout 5s ./tcp_serve_chat; rm tcp_serve_chat
+rm tcp_serve_chat.cpp
+echo
+echo
+cd ..
+
+
+cd chap03
+echo
+cp tcp_serve_toupper_fork.c tcp_serve_toupper_fork.cpp
+${CC} -Wall -Wextra tcp_serve_toupper_fork.c -o tcp_serve_toupper_fork; timeout 5s ./tcp_serve_toupper_fork; rm tcp_serve_toupper_fork
+echo
+${CC} -Wall -Wextra tcp_serve_toupper_fork.cpp -o tcp_serve_toupper_fork; timeout 5s ./tcp_serve_toupper_fork; rm tcp_serve_toupper_fork
+rm tcp_serve_toupper_fork.cpp
+echo
+echo
+cd ..
+
