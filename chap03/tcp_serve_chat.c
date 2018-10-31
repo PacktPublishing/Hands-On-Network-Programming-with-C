@@ -95,9 +95,11 @@ int main() {
                     struct sockaddr_storage client_address;
                     socklen_t client_len = sizeof(client_address);
                     SOCKET socket_client = accept(socket_listen,
-                            (struct sockaddr*) &client_address, &client_len);
+                            (struct sockaddr*) &client_address,
+                            &client_len);
                     if (!ISVALIDSOCKET(socket_client)) {
-                        fprintf(stderr, "accept() failed. (%d)\n", GETSOCKETERRNO());
+                        fprintf(stderr, "accept() failed. (%d)\n",
+                                GETSOCKETERRNO());
                         return 1;
                     }
 
@@ -107,7 +109,8 @@ int main() {
 
                     char address_buffer[100];
                     getnameinfo((struct sockaddr*)&client_address,
-                            client_len, address_buffer, sizeof(address_buffer), 0, 0,
+                            client_len,
+                            address_buffer, sizeof(address_buffer), 0, 0,
                             NI_NUMERICHOST);
                     printf("New connection from %s\n", address_buffer);
 
