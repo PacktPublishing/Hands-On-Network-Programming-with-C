@@ -117,11 +117,11 @@ cd ..
 
 cd chap04
 echo
-cp upd_sendto.c upd_sendto.cpp
-${CC} -Wall -Wextra upd_sendto.c -o upd_sendto; timeout 5s ./upd_sendto; rm upd_sendto
+cp udp_sendto.c udp_sendto.cpp
+${CC} -Wall -Wextra udp_sendto.c -o udp_sendto; timeout 5s ./udp_sendto; rm udp_sendto
 echo
-${CC} -Wall -Wextra upd_sendto.cpp -o upd_sendto; timeout 5s ./upd_sendto; rm upd_sendto
-rm upd_sendto.cpp
+${CC} -Wall -Wextra udp_sendto.cpp -o udp_sendto; timeout 5s ./udp_sendto; rm udp_sendto
+rm udp_sendto.cpp
 echo
 echo
 cd ..
