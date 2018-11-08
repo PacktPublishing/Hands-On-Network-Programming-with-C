@@ -103,3 +103,63 @@ rm tcp_serve_toupper_fork.cpp
 echo
 echo
 cd ..
+
+
+cd chap04
+echo
+cp udp_client.c udp_client.cpp
+${CC} -Wall -Wextra udp_client.c -o udp_client; timeout 5s ./udp_client; rm udp_client
+echo
+${CC} -Wall -Wextra udp_client.cpp -o udp_client; timeout 5s ./udp_client; rm udp_client
+rm udp_client.cpp
+echo
+echo
+cd ..
+
+
+cd chap04
+echo
+cp upd_sendto.c upd_sendto.cpp
+${CC} -Wall -Wextra upd_sendto.c -o upd_sendto; timeout 5s ./upd_sendto; rm upd_sendto
+echo
+${CC} -Wall -Wextra upd_sendto.cpp -o upd_sendto; timeout 5s ./upd_sendto; rm upd_sendto
+rm upd_sendto.cpp
+echo
+echo
+cd ..
+
+
+cd chap04
+echo
+cp udp_recvfrom.c udp_recvfrom.cpp
+${CC} -Wall -Wextra udp_recvfrom.c -o udp_recvfrom; timeout 5s ./udp_recvfrom; rm udp_recvfrom
+echo
+${CC} -Wall -Wextra udp_recvfrom.cpp -o udp_recvfrom; timeout 5s ./udp_recvfrom; rm udp_recvfrom
+rm udp_recvfrom.cpp
+echo
+echo
+cd ..
+
+
+cd chap04
+echo
+cp udp_serve_toupper.c udp_serve_toupper.cpp
+${CC} -Wall -Wextra udp_serve_toupper.c -o udp_serve_toupper; timeout 5s ./udp_serve_toupper; rm udp_serve_toupper
+echo
+${CC} -Wall -Wextra udp_serve_toupper.cpp -o udp_serve_toupper; timeout 5s ./udp_serve_toupper; rm udp_serve_toupper
+rm udp_serve_toupper.cpp
+echo
+echo
+cd ..
+
+
+cd chap04
+echo
+cp udp_serve_toupper_simple.c udp_serve_toupper_simple.cpp
+${CC} -Wall -Wextra udp_serve_toupper_simple.c -o udp_serve_toupper_simple; timeout 5s ./udp_serve_toupper_simple; rm udp_serve_toupper_simple
+echo
+${CC} -Wall -Wextra udp_serve_toupper_simple.cpp -o udp_serve_toupper_simple; timeout 5s ./udp_serve_toupper_simple; rm udp_serve_toupper_simple
+rm udp_serve_toupper_simple.cpp
+echo
+echo
+cd ..
