@@ -112,3 +112,70 @@ REM tcp_serve_chat.exe
 del tcp_serve_chat.exe
 del tcp_serve_chat.cpp
 cd ..
+
+
+
+cd chap04
+copy udp_client.c udp_client.cpp
+echo "%CC%"
+%CC% udp_client.c -o udp_client.exe %CEXTRA%
+REM udp_client.exe
+del udp_client.exe
+%CC% udp_client.cpp -o udp_client.exe %CEXTRA%
+REM udp_client.exe
+del udp_client.exe
+del udp_client.cpp
+cd ..
+
+
+cd chap04
+copy udp_sendto.c udp_sendto.cpp
+echo "%CC%"
+%CC% udp_sendto.c -o udp_sendto.exe %CEXTRA%
+REM udp_sendto.exe
+del udp_sendto.exe
+%CC% udp_sendto.cpp -o udp_sendto.exe %CEXTRA%
+REM udp_sendto.exe
+del udp_sendto.exe
+del udp_sendto.cpp
+cd ..
+
+
+cd chap04
+copy udp_recvfrom.c udp_recvfrom.cpp
+echo "%CC%"
+%CC% udp_recvfrom.c -o udp_recvfrom.exe %CEXTRA%
+REM udp_recvfrom.exe
+del udp_recvfrom.exe
+%CC% udp_recvfrom.cpp -o udp_recvfrom.exe %CEXTRA%
+REM udp_recvfrom.exe
+del udp_recvfrom.exe
+del udp_recvfrom.cpp
+cd ..
+
+
+cd chap04
+copy udp_serve_toupper.c udp_serve_toupper.cpp
+echo "%CC%"
+%CC% udp_serve_toupper.c -o udp_serve_toupper.exe %CEXTRA%
+REM udp_serve_toupper.exe
+del udp_serve_toupper.exe
+%CC% udp_serve_toupper.cpp -o udp_serve_toupper.exe %CEXTRA%
+REM udp_serve_toupper.exe
+del udp_serve_toupper.exe
+del udp_serve_toupper.cpp
+cd ..
+
+
+cd chap04
+copy udp_serve_toupper_simple.c udp_serve_toupper_simple.cpp
+echo "%CC%"
+%CC% udp_serve_toupper_simple.c -o udp_serve_toupper_simple.exe %CEXTRA%
+REM udp_serve_toupper_simple.exe
+del udp_serve_toupper_simple.exe
+%CC% udp_serve_toupper_simple.cpp -o udp_serve_toupper_simple.exe %CEXTRA%
+REM udp_serve_toupper_simple.exe
+del udp_serve_toupper_simple.exe
+del udp_serve_toupper_simple.cpp
+cd ..
+
