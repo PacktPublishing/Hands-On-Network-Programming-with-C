@@ -68,7 +68,6 @@ echo
 cd ..
 
 
-
 cd chap03
 echo
 cp tcp_serve_toupper.c tcp_serve_toupper.cpp
@@ -103,7 +102,6 @@ rm tcp_serve_toupper_fork.cpp
 echo
 echo
 cd ..
-
 
 cd chap04
 echo
