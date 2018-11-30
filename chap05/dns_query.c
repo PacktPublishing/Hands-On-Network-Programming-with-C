@@ -240,7 +240,7 @@ int main(int argc, char *argv[]) {
         type = 28;
     } else {
         fprintf(stderr, "Unknown type '%s'. Use a, aaaa, txt, or mx.",
-                argv[1]);
+                argv[2]);
         exit(1);
     }
 
