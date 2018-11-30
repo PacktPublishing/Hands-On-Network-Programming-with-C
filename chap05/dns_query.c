@@ -141,8 +141,8 @@ void print_dns_message(const char *message, int msg_length) {
             printf("  type: %d\n", type);
             p += 2;
 
-            const int class = (p[0] << 8) + p[1];
-            printf(" class: %d\n", class);
+            const int qclass = (p[0] << 8) + p[1];
+            printf(" class: %d\n", qclass);
             p += 2;
         }
     }
@@ -165,8 +165,8 @@ void print_dns_message(const char *message, int msg_length) {
             printf("  type: %d\n", type);
             p += 2;
 
-            const int class = (p[0] << 8) + p[1];
-            printf(" class: %d\n", class);
+            const int qclass = (p[0] << 8) + p[1];
+            printf(" class: %d\n", qclass);
             p += 2;
 
             const unsigned int ttl = (p[0] << 24) + (p[1] << 16) +
@@ -273,7 +273,7 @@ int main(int argc, char *argv[]) {
     }
 
 
-    char query[2048] = {0xAB, 0xCD, /* ID */
+    char query[1024] = {0xAB, 0xCD, /* ID */
                         0x01, 0x00, /* Set recursion */
                         0x00, 0x01, /* QDCOUNT */
                         0x00, 0x00, /* ANCOUNT */
