@@ -238,8 +238,10 @@ int main(int argc, char *argv[]) {
         type = 16;
     } else if (strcmp(argv[2], "aaaa") == 0) {
         type = 28;
+    } else if (strcmp(argv[2], "any") == 0) {
+        type = 255;
     } else {
-        fprintf(stderr, "Unknown type '%s'. Use a, aaaa, txt, or mx.",
+        fprintf(stderr, "Unknown type '%s'. Use a, aaaa, txt, mx, or any.",
                 argv[2]);
         exit(1);
     }

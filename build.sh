@@ -166,6 +166,18 @@ cd ..
 
 cd chap05
 echo
+cp lookup.c lookup.cpp
+${CC} -Wall -Wextra lookup.c -o lookup; ./lookup example.com; rm lookup
+echo
+${CC} -Wall -Wextra lookup.cpp -o lookup; ./lookup example.com; rm lookup
+rm lookup.cpp
+echo
+echo
+cd ..
+
+
+cd chap05
+echo
 cp dns_query.c dns_query.cpp
 ${CC} -Wall -Wextra dns_query.c -o dns_query; ./dns_query example.com a; rm dns_query
 echo

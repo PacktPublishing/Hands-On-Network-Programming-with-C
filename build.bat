@@ -181,6 +181,19 @@ cd ..
 
 
 cd chap05
+copy lookup.c lookup.cpp
+echo "%CC%"
+%CC% lookup.c -o lookup.exe %CEXTRA%
+lookup.exe example.com
+del lookup.exe
+%CC% lookup.cpp -o lookup.exe %CEXTRA%
+lookup.exe example.com
+del lookup.exe
+del lookup.cpp
+cd ..
+
+
+cd chap05
 copy dns_query.c dns_query.cpp
 echo "%CC%"
 %CC% dns_query.c -o dns_query.exe %CEXTRA%
