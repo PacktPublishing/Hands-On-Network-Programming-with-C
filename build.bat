@@ -179,3 +179,16 @@ del udp_serve_toupper_simple.exe
 del udp_serve_toupper_simple.cpp
 cd ..
 
+
+cd chap05
+copy dns_query.c dns_query.cpp
+echo "%CC%"
+%CC% dns_query.c -o dns_query.exe %CEXTRA%
+dns_query.exe example.com a
+del dns_query.exe
+%CC% dns_query.cpp -o dns_query.exe %CEXTRA%
+dns_query.exe example.com a
+del dns_query.exe
+del dns_query.cpp
+cd ..
+

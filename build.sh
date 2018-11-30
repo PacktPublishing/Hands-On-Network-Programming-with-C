@@ -162,3 +162,15 @@ rm udp_serve_toupper_simple.cpp
 echo
 echo
 cd ..
+
+
+cd chap05
+echo
+cp dns_query.c dns_query.cpp
+${CC} -Wall -Wextra dns_query.c -o dns_query; ./dns_query example.com a; rm dns_query
+echo
+${CC} -Wall -Wextra dns_query.cpp -o dns_query; ./dns_query example.com a; rm dns_query
+rm dns_query.cpp
+echo
+echo
+cd ..
