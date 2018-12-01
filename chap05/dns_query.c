@@ -195,6 +195,7 @@ void print_dns_message(const char *message, int msg_length) {
                     printf("%02x%02x", p[j], p[j+1]);
                     if (j + 2 < rdlen) printf(":");
                 }
+                printf("\n");
 
             } else if (type == 15 && rdlen > 3) {
                 /* MX Record */
