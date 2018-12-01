@@ -48,7 +48,6 @@ int main(int argc, char *argv[]) {
     struct addrinfo hints;
     memset(&hints, 0, sizeof(hints));
     hints.ai_flags = AI_ALL;
-    hints.ai_socktype = SOCK_STREAM;
     struct addrinfo *peer_address;
     if (getaddrinfo(argv[1], 0, &hints, &peer_address)) {
         fprintf(stderr, "getaddrinfo() failed. (%d)\n", GETSOCKETERRNO());
@@ -57,14 +56,15 @@ int main(int argc, char *argv[]) {
 
 
     printf("Remote address is:\n");
+    struct addrinfo *address = peer_address;
     do {
-    char address_buffer[100];
-    getnameinfo(peer_address->ai_addr, peer_address->ai_addrlen,
-            address_buffer, sizeof(address_buffer),
-            0, 0,
-            NI_NUMERICHOST);
-    printf("\t%s\n", address_buffer);
-    } while ((peer_address = peer_address->ai_next));
+        char address_buffer[100];
+        getnameinfo(address->ai_addr, address->ai_addrlen,
+                address_buffer, sizeof(address_buffer),
+                0, 0,
+                NI_NUMERICHOST);
+        printf("\t%s\n", address_buffer);
+    } while ((address = address->ai_next));
 
 
     freeaddrinfo(peer_address);
