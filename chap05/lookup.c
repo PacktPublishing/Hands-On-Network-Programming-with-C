@@ -67,6 +67,8 @@ int main(int argc, char *argv[]) {
     } while ((peer_address = peer_address->ai_next));
 
 
+    freeaddrinfo(peer_address);
+
 #if defined(_WIN32)
     WSACleanup();
 #endif

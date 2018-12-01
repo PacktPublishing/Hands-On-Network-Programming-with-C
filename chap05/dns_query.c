@@ -319,6 +319,7 @@ int main(int argc, char *argv[]) {
     printf("\n");
 
 
+    freeaddrinfo(peer_address);
     CLOSESOCKET(socket_peer);
 
 #if defined(_WIN32)
