@@ -38,17 +38,18 @@ const unsigned char *print_name(const unsigned char *msg,
         return p;
 
     } else {
-        while(*p) {
-            const int len = *p++;
-            if (p + len + 1 > end) {
-                fprintf(stderr, "End of message.\n"); exit(1);}
+        const int len = *p++;
+        if (p + len + 1 > end) {
+            fprintf(stderr, "End of message.\n"); exit(1);}
 
-            printf("%.*s", len, p);
-            p += len;
-            if (*p) printf(".");
+        printf("%.*s", len, p);
+        p += len;
+        if (*p) {
+            printf(".");
+            return print_name(msg, p, end);
+        } else {
+            return p+1;
         }
-        ++p;
-        return p;
     }
 }
 
@@ -194,6 +195,13 @@ void print_dns_message(const char *message, int msg_length) {
                     printf("%02x%02x", p[j], p[j+1]);
                     if (j + 2 < rdlen) printf(":");
                 }
+
+            } else if (type == 15 && rdlen > 3) {
+                /* MX Record */
+                const int preference = (p[0] << 8) + p[1];
+                printf("  pref: %d\n", preference);
+                printf("MX: ");
+                print_name(msg, p+2, end); printf("\n");
 
             } else if (type == 16) {
                 /* TXT Record */
