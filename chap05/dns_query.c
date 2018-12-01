@@ -313,7 +313,7 @@ int main(int argc, char *argv[]) {
     int bytes_received = recvfrom(socket_peer,
             read, 1024, 0, 0, 0);
 
-    printf("Received (%d bytes).\n", bytes_received);
+    printf("Received %d bytes.\n", bytes_received);
 
     print_dns_message(read, bytes_received);
     printf("\n");
