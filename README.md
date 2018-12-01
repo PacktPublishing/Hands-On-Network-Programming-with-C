@@ -40,3 +40,8 @@ Windows, gcc and clang on Linux and macOS.
 * **chap04/udp_sendto.c** Uses `sendto()` to send one UDP packet.
 * **chap04/udp_serve_toupper.c** Receives UDP data, and echos it back to the sender in all upper-case.
 * **chap04/udp_serve_toupper_simple.c** As above, but doesn't use `select()`.
+
+## Chapter 5
+
+* **chap05/lookup.c** Uses `getaddrinfo()` to lookup addresses for a given hostname.
+* **chap05/dns_query.c** Encodes and sends a DNS query, then decodes the response.
