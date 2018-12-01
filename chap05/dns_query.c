@@ -40,7 +40,7 @@ const unsigned char *print_name(const unsigned char *msg,
     } else {
         while(*p) {
             const int len = *p++;
-            if (p + len > end) {
+            if (p + len + 1 > end) {
                 fprintf(stderr, "End of message.\n"); exit(1);}
 
             printf("%.*s", len, p);
@@ -54,17 +54,17 @@ const unsigned char *print_name(const unsigned char *msg,
 
 void print_dns_message(const char *message, int msg_length) {
 
-    const unsigned char *msg = (const unsigned char *)message;
-
     if (msg_length < 12) {
         fprintf(stderr, "Message is too short to be valid.\n");
         exit(1);
     }
 
+    const unsigned char *msg = (const unsigned char *)message;
+
     /*
     int i;
     for (i = 0; i < msg_length; ++i) {
-        unsigned char r = message[i];
+        unsigned char r = msg[i];
         printf("%02d:   %02X  %03d  '%c'\n", i, r, r, r);
     }
     printf("\n");
@@ -194,6 +194,7 @@ void print_dns_message(const char *message, int msg_length) {
                     printf("%02x%02x", p[j], p[j+1]);
                     if (j + 2 < rdlen) printf(":");
                 }
+
             } else if (type == 16) {
                 /* TXT Record */
                 printf("TXT: '%.*s'\n", rdlen-1, p+1);
