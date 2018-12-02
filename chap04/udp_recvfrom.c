@@ -61,6 +61,7 @@ int main() {
         fprintf(stderr, "bind() failed. (%d)\n", GETSOCKETERRNO());
         return 1;
     }
+    freeaddrinfo(bind_address);
 
 
     struct sockaddr_storage client_address;
@@ -78,7 +79,7 @@ int main() {
     char address_buffer[100];
     char service_buffer[100];
     getnameinfo(((struct sockaddr*)&client_address),
-            bind_address->ai_addrlen,
+            client_len,
             address_buffer, sizeof(address_buffer),
             service_buffer, sizeof(service_buffer),
             NI_NUMERICHOST | NI_NUMERICSERV);
