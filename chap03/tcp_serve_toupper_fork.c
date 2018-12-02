@@ -60,6 +60,7 @@ int main() {
         fprintf(stderr, "bind() failed. (%d)\n", GETSOCKETERRNO());
         return 1;
     }
+    freeaddrinfo(bind_address);
 
 
     printf("Listening...\n");
