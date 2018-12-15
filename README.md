@@ -45,3 +45,11 @@ Windows, gcc and clang on Linux and macOS.
 
 * **chap05/lookup.c** Uses `getaddrinfo()` to lookup addresses for a given hostname.
 * **chap05/dns_query.c** Encodes and sends a DNS query, then decodes the response.
+
+## Chapter 6
+
+* **chap06/web_get.c** A minimal HTTP client which will download a web resource from a given URL.
+
+## Chapter 7
+
+* **chap07/web_server.c** A minimal web server.

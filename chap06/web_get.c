@@ -164,7 +164,7 @@ int main(int argc, char *argv[]) {
     char *end = response + response_size;
     char *body = 0;
 
-    enum {length, chunked, close};
+    enum {length, chunked, connection};
     int encoding = 0;
     int remaining = 0;
 
@@ -196,16 +196,16 @@ int main(int argc, char *argv[]) {
         if (FD_ISSET(server, &reads)) {
             int bytes_received = recv(server, p, end - p, 0);
             if (bytes_received < 1) {
-                if (encoding == close && body) {
+                if (encoding == connection && body) {
                     printf("%.*s", end - body, body);
                 }
 
-                printf("\nConnection closed by peer.\n");
+                printf("\nConnection connection by peer.\n");
                 break;
             }
 
-            printf("Received (%d bytes): '%.*s'",
-                    bytes_received, bytes_received, p);
+            /*printf("Received (%d bytes): '%.*s'",
+                    bytes_received, bytes_received, p);*/
 
             p += bytes_received;
             *p = 0;
@@ -229,7 +229,7 @@ int main(int argc, char *argv[]) {
                         encoding = chunked;
                         remaining = 0;
                     } else {
-                        encoding = close;
+                        encoding = connection;
                     }
                 }
                 printf("\nReceived Body:\n");
@@ -257,9 +257,8 @@ chunked:
                          goto chunked;
                      }
                 }
-            }
-        }
-
+            } //if (body)
+        } //if FDSET
     } //end while(1)
 
     printf("\nClosing socket...\n");

@@ -230,7 +230,7 @@ void serve_resource(struct client_info *client, const char *path) {
 }
 
 
-int main(int argc, char *argv[]) {
+int main() {
 
 #if defined(_WIN32)
     WSADATA d;
