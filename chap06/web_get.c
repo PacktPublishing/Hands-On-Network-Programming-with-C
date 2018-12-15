@@ -158,10 +158,10 @@ int main(int argc, char *argv[]) {
 
     const clock_t start_time = clock();
 
-    const int response_size = 8192;
-    char response[response_size+1];
+#define RESPONSE_SIZE 8192
+    char response[RESPONSE_SIZE+1];
     char *p = response, *q;
-    char *end = response + response_size;
+    char *end = response + RESPONSE_SIZE;
     char *body = 0;
 
     enum {length, chunked, connection};
