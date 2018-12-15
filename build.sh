@@ -186,3 +186,27 @@ rm dns_query.cpp
 echo
 echo
 cd ..
+
+
+cd chap06
+echo
+cp web_get.c web_get.cpp
+${CC} -Wall -Wextra web_get.c -o web_get; ./web_get example.com; rm web_get
+echo
+${CC} -Wall -Wextra web_get.cpp -o web_get; ./web_get example.com; rm web_get
+rm web_get.cpp
+echo
+echo
+cd ..
+
+
+cd chap07
+echo
+cp web_server.c web_server.cpp
+${CC} -Wall -Wextra web_server.c -o web_server; timeout 5s ./web_server; rm web_server
+echo
+${CC} -Wall -Wextra web_server.cpp -o web_server; timeout 5s ./web_server; rm web_server
+rm web_get.cpp
+echo
+echo
+cd ..
