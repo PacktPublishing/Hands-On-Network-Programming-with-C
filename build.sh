@@ -206,7 +206,7 @@ cp web_server.c web_server.cpp
 ${CC} -Wall -Wextra web_server.c -o web_server; timeout 5s ./web_server; rm web_server
 echo
 ${CC} -Wall -Wextra web_server.cpp -o web_server; timeout 5s ./web_server; rm web_server
-rm web_get.cpp
+rm web_server.cpp
 echo
 echo
 cd ..

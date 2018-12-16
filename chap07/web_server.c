@@ -88,7 +88,8 @@ struct client_info *get_client(SOCKET s) {
     }
 
     if (ci) return ci;
-    struct client_info *n = calloc(1, sizeof(struct client_info));
+    struct client_info *n =
+        (struct client_info*) calloc(1, sizeof(struct client_info));
 
     if (!n) {
         fprintf(stderr, "Out of memory.\n");
@@ -213,7 +214,7 @@ void serve_resource(struct client_info *client, const char *path) {
     sprintf(buffer, "Connection: close\r\n");
     send(client->socket, buffer, strlen(buffer), 0);
 
-    sprintf(buffer, "Content-Length: %d\r\n", cl);
+    sprintf(buffer, "Content-Length: %u\r\n", cl);
     send(client->socket, buffer, strlen(buffer), 0);
 
     sprintf(buffer, "\r\n");
