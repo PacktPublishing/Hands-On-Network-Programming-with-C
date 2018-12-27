@@ -181,14 +181,16 @@ fd_set wait_on_clients(SOCKET server) {
 
 
 void send_400(struct client_info *client) {
-    const char *c400 = "HTTP/1.1 400 Bad Request\r\nConnection: close\r\n"
+    const char *c400 = "HTTP/1.1 400 Bad Request\r\n"
+        "Connection: close\r\n"
         "Content-Length: 11\r\n\r\nBad Request";
     send(client->socket, c400, strlen(c400), 0);
     drop_client(client);
 }
 
 void send_404(struct client_info *client) {
-    const char *c404 = "HTTP/1.1 404 Not Found\r\nConnection: close\r\n"
+    const char *c404 = "HTTP/1.1 404 Not Found\r\n"
+        "Connection: close\r\n"
         "Content-Length: 9\r\n\r\nNot Found";
     send(client->socket, c404, strlen(c404), 0);
     drop_client(client);
@@ -204,6 +206,11 @@ void serve_resource(struct client_info *client, const char *path) {
 
     if (strlen(path) > 100) {
         send_400(client);
+        return;
+    }
+
+    if (strstr(path, "..")) {
+        send_404(client);
         return;
     }
 
