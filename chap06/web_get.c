@@ -197,7 +197,7 @@ int main(int argc, char *argv[]) {
             int bytes_received = recv(server, p, end - p, 0);
             if (bytes_received < 1) {
                 if (encoding == connection && body) {
-                    printf("%.*s", end - body, body);
+                    printf("%.*s", (int)(end - body), body);
                 }
 
                 printf("\nConnection connection by peer.\n");
@@ -216,7 +216,7 @@ int main(int argc, char *argv[]) {
 
                 printf("Received Headers:\n%s\n", response);
 
-                q = strstr(response, "Content-Length: ");
+                q = strstr(response, "\nContent-Length: ");
                 if (q) {
                     encoding = length;
                     q = strchr(q, ' ');
@@ -224,7 +224,7 @@ int main(int argc, char *argv[]) {
                     remaining = strtol(q, 0, 10);
 
                 } else {
-                    q = strstr(response, "Transfer-Encoding: chunked");
+                    q = strstr(response, "\nTransfer-Encoding: chunked");
                     if (q) {
                         encoding = chunked;
                         remaining = 0;
@@ -242,24 +242,27 @@ int main(int argc, char *argv[]) {
                         break;
                     }
                 } else if (encoding == chunked) {
-chunked:
-                     if (!remaining) {
-                         if ((q = strstr(body, "\r\n"))) {
-                             remaining = strtol(body, 0, 16);
-                             if (!remaining) break;
-                             body = q + 2;
-                         }
-                     }
-                     if (remaining && p - body >= remaining) {
-                         printf("%.*s", remaining, body);
-                         body += remaining + 2;
-                         remaining = 0;
-                         goto chunked;
-                     }
+                    do {
+                        if (remaining == 0) {
+                            if ((q = strstr(body, "\r\n"))) {
+                                remaining = strtol(body, 0, 16);
+                                if (!remaining) goto finish;
+                                body = q + 2;
+                            } else {
+                                break;
+                            }
+                        }
+                        if (remaining && p - body >= remaining) {
+                            printf("%.*s", remaining, body);
+                            body += remaining + 2;
+                            remaining = 0;
+                        }
+                    } while (!remaining);
                 }
             } //if (body)
         } //if FDSET
     } //end while(1)
+finish:
 
     printf("\nClosing socket...\n");
     CLOSESOCKET(server);
