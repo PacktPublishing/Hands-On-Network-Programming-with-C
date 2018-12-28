@@ -236,8 +236,8 @@ void serve_resource(struct client_info *client, const char *path) {
     size_t cl = ftell(fp);
     rewind(fp);
 
-    const int bsize = 1024;
-    char buffer[bsize];
+#define BSIZE 1024
+    char buffer[BSIZE];
 
     const char *ct = get_content_type(path);
 
@@ -258,10 +258,10 @@ void serve_resource(struct client_info *client, const char *path) {
     sprintf(buffer, "\r\n");
     send(client->socket, buffer, strlen(buffer), 0);
 
-    int r = fread(buffer, 1, bsize, fp);
+    int r = fread(buffer, 1, BSIZE, fp);
     while (r) {
         send(client->socket, buffer, r, 0);
-        r = fread(buffer, 1, bsize, fp);
+        r = fread(buffer, 1, BSIZE, fp);
     }
 
     fclose(fp);
