@@ -92,6 +92,7 @@ SOCKET create_socket(const char* host, const char *port) {
 struct client_info {
     socklen_t address_length;
     struct sockaddr_storage address;
+    char address_buffer[128];
     SOCKET socket;
     char request[MAX_REQUEST_SIZE + 1];
     int received;
@@ -146,12 +147,11 @@ void drop_client(struct client_info **client_list,
 
 
 const char *get_client_address(struct client_info *ci) {
-    static char address_buffer[100];
     getnameinfo((struct sockaddr*)&ci->address,
             ci->address_length,
-            address_buffer, sizeof(address_buffer), 0, 0,
+            ci->address_buffer, sizeof(ci->address_buffer), 0, 0,
             NI_NUMERICHOST);
-    return address_buffer;
+    return ci->address_buffer;
 }
 
 
@@ -254,10 +254,8 @@ void serve_resource(struct client_info **client_list,
     sprintf(buffer, "Content-Length: %u\r\n", cl);
     send(client->socket, buffer, strlen(buffer), 0);
 
-    if (ct) {
-        sprintf(buffer, "Content-Type: %s\r\n", ct);
-        send(client->socket, buffer, strlen(buffer), 0);
-    }
+    sprintf(buffer, "Content-Type: %s\r\n", ct);
+    send(client->socket, buffer, strlen(buffer), 0);
 
     sprintf(buffer, "\r\n");
     send(client->socket, buffer, strlen(buffer), 0);

@@ -250,10 +250,8 @@ void serve_resource(struct client_info *client, const char *path) {
     sprintf(buffer, "Content-Length: %u\r\n", cl);
     send(client->socket, buffer, strlen(buffer), 0);
 
-    if (ct) {
-        sprintf(buffer, "Content-Type: %s\r\n", ct);
-        send(client->socket, buffer, strlen(buffer), 0);
-    }
+    sprintf(buffer, "Content-Type: %s\r\n", ct);
+    send(client->socket, buffer, strlen(buffer), 0);
 
     sprintf(buffer, "\r\n");
     send(client->socket, buffer, strlen(buffer), 0);
