@@ -231,3 +231,16 @@ REM web_server.exe
 del web_server.exe
 del web_server.cpp
 cd ..
+
+
+cd chap07
+copy web_server2.c web_server2.cpp
+echo "%CC%"
+%CC% web_server2.c -o web_server2.exe %CEXTRA%
+REM web_server2.exe
+del web_server2.exe
+%CC% web_server2.cpp -o web_server2.exe %CEXTRA%
+REM web_server2.exe
+del web_server2.exe
+del web_server2.cpp
+cd ..

@@ -210,3 +210,18 @@ rm web_server.cpp
 echo
 echo
 cd ..
+
+
+cd chap07
+echo
+cp web_server2.c web_server2.cpp
+${CC} -Wall -Wextra web_server2.c -o web_server2; timeout 5s ./web_server2; rm web_server2
+echo
+${CC} -Wall -Wextra web_server2.cpp -o web_server2; timeout 5s ./web_server2; rm web_server2
+rm web_server2.cpp
+echo
+echo
+cd ..
+
+
+

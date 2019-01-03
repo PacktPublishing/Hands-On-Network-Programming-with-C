@@ -236,10 +236,10 @@ void serve_resource(struct client_info *client, const char *path) {
     size_t cl = ftell(fp);
     rewind(fp);
 
+    const char *ct = get_content_type(path);
+
 #define BSIZE 1024
     char buffer[BSIZE];
-
-    const char *ct = get_content_type(path);
 
     sprintf(buffer, "HTTP/1.1 200 OK\r\n");
     send(client->socket, buffer, strlen(buffer), 0);

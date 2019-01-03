@@ -53,3 +53,4 @@ Windows, gcc and clang on Linux and macOS.
 ## Chapter 7
 
 * **chap07/web_server.c** A minimal web server.
+* **chap07/web_server2.c** A minimal web server (no globals).
