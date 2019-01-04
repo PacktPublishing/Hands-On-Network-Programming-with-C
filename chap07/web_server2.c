@@ -240,7 +240,7 @@ void serve_resource(struct client_info **client_list,
     size_t cl = ftell(fp);
     rewind(fp);
 
-    const char *ct = get_content_type(path);
+    const char *ct = get_content_type(full_path);
 
 #define BSIZE 1024
     char buffer[BSIZE];
