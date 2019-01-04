@@ -162,3 +162,68 @@ rm udp_serve_toupper_simple.cpp
 echo
 echo
 cd ..
+
+
+
+cd chap05
+echo
+cp lookup.c lookup.cpp
+${CC} -Wall -Wextra lookup.c -o lookup; ./lookup example.com; rm lookup
+echo
+${CC} -Wall -Wextra lookup.cpp -o lookup; ./lookup example.com; rm lookup
+rm lookup.cpp
+echo
+echo
+cd ..
+
+
+cd chap05
+echo
+cp dns_query.c dns_query.cpp
+${CC} -Wall -Wextra dns_query.c -o dns_query; ./dns_query example.com a; rm dns_query
+echo
+${CC} -Wall -Wextra dns_query.cpp -o dns_query; ./dns_query example.com a; rm dns_query
+rm dns_query.cpp
+echo
+echo
+cd ..
+
+
+cd chap06
+echo
+cp web_get.c web_get.cpp
+${CC} -Wall -Wextra web_get.c -o web_get; ./web_get example.com; rm web_get
+echo
+${CC} -Wall -Wextra web_get.cpp -o web_get; ./web_get example.com; rm web_get
+rm web_get.cpp
+echo
+echo
+cd ..
+
+
+cd chap07
+echo
+cp web_server.c web_server.cpp
+${CC} -Wall -Wextra web_server.c -o web_server; timeout 5s ./web_server; rm web_server
+echo
+${CC} -Wall -Wextra web_server.cpp -o web_server; timeout 5s ./web_server; rm web_server
+rm web_server.cpp
+echo
+echo
+cd ..
+
+
+cd chap07
+echo
+cp web_server2.c web_server2.cpp
+${CC} -Wall -Wextra web_server2.c -o web_server2; timeout 5s ./web_server2; rm web_server2
+echo
+${CC} -Wall -Wextra web_server2.cpp -o web_server2; timeout 5s ./web_server2; rm web_server2
+rm web_server2.cpp
+echo
+echo
+cd ..
+
+
+
+

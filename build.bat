@@ -179,3 +179,70 @@ del udp_serve_toupper_simple.exe
 del udp_serve_toupper_simple.cpp
 cd ..
 
+
+
+cd chap05
+copy lookup.c lookup.cpp
+echo "%CC%"
+%CC% lookup.c -o lookup.exe %CEXTRA%
+lookup.exe example.com
+del lookup.exe
+%CC% lookup.cpp -o lookup.exe %CEXTRA%
+lookup.exe example.com
+del lookup.exe
+del lookup.cpp
+cd ..
+
+
+cd chap05
+copy dns_query.c dns_query.cpp
+echo "%CC%"
+%CC% dns_query.c -o dns_query.exe %CEXTRA%
+dns_query.exe example.com a
+del dns_query.exe
+%CC% dns_query.cpp -o dns_query.exe %CEXTRA%
+dns_query.exe example.com a
+del dns_query.exe
+del dns_query.cpp
+cd ..
+
+
+
+cd chap06
+copy web_get.c web_get.cpp
+echo "%CC%"
+%CC% web_get.c -o web_get.exe %CEXTRA%
+web_get.exe example.com a
+del web_get.exe
+%CC% web_get.cpp -o web_get.exe %CEXTRA%
+web_get.exe example.com
+del web_get.exe
+del web_get.cpp
+cd ..
+
+
+cd chap07
+copy web_server.c web_server.cpp
+echo "%CC%"
+%CC% web_server.c -o web_server.exe %CEXTRA%
+REM web_server.exe
+del web_server.exe
+%CC% web_server.cpp -o web_server.exe %CEXTRA%
+REM web_server.exe
+del web_server.exe
+del web_server.cpp
+cd ..
+
+
+cd chap07
+copy web_server2.c web_server2.cpp
+echo "%CC%"
+%CC% web_server2.c -o web_server2.exe %CEXTRA%
+REM web_server2.exe
+del web_server2.exe
+%CC% web_server2.cpp -o web_server2.exe %CEXTRA%
+REM web_server2.exe
+del web_server2.exe
+del web_server2.cpp
+cd ..
+

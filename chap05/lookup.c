@@ -22,9 +22,19 @@
  * SOFTWARE.
  */
 
-#include "chap04.h"
+#include "chap05.h"
 
-int main() {
+#ifndef AI_ALL
+#define AI_ALL 0x0100
+#endif
+
+int main(int argc, char *argv[]) {
+
+    if (argc < 2) {
+        printf("Usage:\n\tlookup hostname\n");
+        printf("Example:\n\tlookup example.com\n");
+        exit(0);
+    }
 
 #if defined(_WIN32)
     WSADATA d;
@@ -34,53 +44,35 @@ int main() {
     }
 #endif
 
-    printf("Configuring remote address...\n");
+    printf("Resolving hostname '%s'\n", argv[1]);
     struct addrinfo hints;
     memset(&hints, 0, sizeof(hints));
-    hints.ai_socktype = SOCK_DGRAM;
+    hints.ai_flags = AI_ALL;
     struct addrinfo *peer_address;
-    if (getaddrinfo("127.0.0.1", "8080", &hints, &peer_address)) {
+    if (getaddrinfo(argv[1], 0, &hints, &peer_address)) {
         fprintf(stderr, "getaddrinfo() failed. (%d)\n", GETSOCKETERRNO());
         return 1;
     }
 
 
-    printf("Remote address is: ");
-    char address_buffer[100];
-    char service_buffer[100];
-    getnameinfo(peer_address->ai_addr, peer_address->ai_addrlen,
-            address_buffer, sizeof(address_buffer),
-            service_buffer, sizeof(service_buffer),
-            NI_NUMERICHOST  | NI_NUMERICSERV);
-    printf("%s %s\n", address_buffer, service_buffer);
-
-
-    printf("Creating socket...\n");
-    SOCKET socket_peer;
-    socket_peer = socket(peer_address->ai_family,
-            peer_address->ai_socktype, peer_address->ai_protocol);
-    if (!ISVALIDSOCKET(socket_peer)) {
-        fprintf(stderr, "socket() failed. (%d)\n", GETSOCKETERRNO());
-        return 1;
-    }
-
-    const char *message = "Hello World";
-    printf("Sending: %s\n", message);
-    int bytes_sent = sendto(socket_peer,
-            message, strlen(message),
-            0,
-            peer_address->ai_addr, peer_address->ai_addrlen);
-    printf("Sent %d bytes.\n", bytes_sent);
+    printf("Remote address is:\n");
+    struct addrinfo *address = peer_address;
+    do {
+        char address_buffer[100];
+        getnameinfo(address->ai_addr, address->ai_addrlen,
+                address_buffer, sizeof(address_buffer),
+                0, 0,
+                NI_NUMERICHOST);
+        printf("\t%s\n", address_buffer);
+    } while ((address = address->ai_next));
 
 
     freeaddrinfo(peer_address);
-    CLOSESOCKET(socket_peer);
 
 #if defined(_WIN32)
     WSACleanup();
 #endif
 
-    printf("Finished.\n");
     return 0;
 }
 

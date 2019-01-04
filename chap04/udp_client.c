@@ -80,6 +80,8 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "connect() failed. (%d)\n", GETSOCKETERRNO());
         return 1;
     }
+    freeaddrinfo(peer_address);
+
 
     printf("Connected.\n");
     printf("To send data, enter text followed by enter.\n");
