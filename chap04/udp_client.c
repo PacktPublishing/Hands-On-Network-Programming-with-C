@@ -82,7 +82,6 @@ int main(int argc, char *argv[]) {
     }
     freeaddrinfo(peer_address);
 
-
     printf("Connected.\n");
     printf("To send data, enter text followed by enter.\n");
 
