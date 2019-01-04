@@ -72,6 +72,7 @@ int main() {
             peer_address->ai_addr, peer_address->ai_addrlen);
     printf("Sent %d bytes.\n", bytes_sent);
 
+
     freeaddrinfo(peer_address);
     CLOSESOCKET(socket_peer);
 
