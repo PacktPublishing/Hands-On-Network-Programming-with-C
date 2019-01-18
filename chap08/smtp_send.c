@@ -82,7 +82,7 @@ void wait_on_response(SOCKET server, int expecting) {
     printf("S: %s", response);
 }
 
-void send_format(SOCKET server, char *text, ...) {
+void send_format(SOCKET server, const char *text, ...) {
     char buffer[1024];
     va_list args;
     va_start(args, text);
@@ -107,7 +107,7 @@ void get_input(const char *prompt, char *buffer)
 }
 
 
-SOCKET connect_to_host(char *hostname, char *port) {
+SOCKET connect_to_host(const char *hostname, const char *port) {
     printf("Configuring remote address...\n");
     struct addrinfo hints;
     memset(&hints, 0, sizeof(hints));
