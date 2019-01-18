@@ -36,14 +36,12 @@ void wait_on_response(SOCKET server, int expecting) {
     int code = 0;
 
     do {
-        printf("waiting for response\n");
         int bytes_received = recv(server, p, end - p, 0);
 
         if (bytes_received < 1) {
             fprintf(stderr, "Connection dropped.\n");
             exit(1);
         }
-        printf("received %d bytes\n", bytes_received);
 
         p += bytes_received;
         *p = 0;
@@ -80,7 +78,7 @@ void wait_on_response(SOCKET server, int expecting) {
         exit(1);
     }
 
-    printf("OK! Got: %s\n", response);
+    printf("S: %s", response);
 }
 
 void send_format(SOCKET server, char *text, ...) {
@@ -92,7 +90,7 @@ void send_format(SOCKET server, char *text, ...) {
 
     send(server, buffer, strlen(buffer), 0);
 
-    printf("Sent:'%s'", buffer);
+    printf("C: %s", buffer);
 }
 
 
@@ -175,21 +173,28 @@ int main() {
     wait_on_response(server, 250);
 
 
-    char *sender = "lv@aeuouoeuaoe.com";
-    char *recipient = "lv@atdhq.com";
 
+    char sender[MAXINPUT] = {};
+    get_input("from: ", sender);
     send_format(server, "MAIL FROM:<%s>\r\n", sender);
     wait_on_response(server, 250);
 
+    char recipient[MAXINPUT] = {};
+    get_input("to: ", recipient);
     send_format(server, "RCPT TO:<%s>\r\n", recipient);
     wait_on_response(server, 250);
 
     send_format(server, "DATA\r\n");
     wait_on_response(server, 354);
 
-    send_format(server, "From: \"Your best pal\" <%s>\r\n", sender);
-    send_format(server, "To: \"Just a man\" <differnt@address.com>\r\n", recipient);
-    send_format(server, "Subject:%s\r\n", "just a simple mail here");
+    char subject[MAXINPUT] = {};
+    get_input("subject: ", subject);
+
+
+
+    send_format(server, "From:<%s>\r\n", sender);
+    send_format(server, "To:<%s>\r\n", recipient);
+    send_format(server, "Subject:%s\r\n", subject);
 
 
     time_t timer;
@@ -204,11 +209,22 @@ int main() {
     send_format(server, "Date:%s\r\n", date);
 
     send_format(server, "\r\n");
-    send_format(server, "Message for you. Haha.\r\n..\r\n.a");
 
 
 
-    send_format(server, "\r\n.\r\n");
+
+    printf("Enter your email text, end with \".\" on a line by itself.\n");
+
+    while (1) {
+        char body[MAXINPUT] = {};
+        get_input("> ", body);
+        send_format(server, "%s\r\n", body);
+        if (strcmp(body, ".") == 0) {
+            break;
+        }
+    }
+
+
     wait_on_response(server, 250);
 
     send_format(server, "QUIT\r\n");
