@@ -27,18 +27,37 @@
 #include <stdarg.h>
 
 #define MAXINPUT 512
+#define MAXRESPONSE 1024
+
+
+int parse_response(const char *response, const char *p, const char *end) {
+    if (p - response > 4) {
+        const char *k;
+        for (k = response; k < end-3; ++k) {
+            if (k == response || k[-1] == '\n') {
+                if (isdigit(k[0]) && isdigit(k[1]) && isdigit(k[2])) {
+                    if (k[3] != '-') {
+                        if (strstr(k, "\r\n")) {
+                            return strtol(k, 0, 10);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return 0;
+}
+
 
 void wait_on_response(SOCKET server, int expecting) {
-#define RESPONSE_SIZE 1024
-    char response[RESPONSE_SIZE+1];
+    char response[MAXRESPONSE+1];
     char *p = response;
-    char *end = response + RESPONSE_SIZE;
+    char *end = response + MAXRESPONSE;
 
     int code = 0;
 
     do {
         int bytes_received = recv(server, p, end - p, 0);
-
         if (bytes_received < 1) {
             fprintf(stderr, "Connection dropped.\n");
             exit(1);
@@ -53,25 +72,7 @@ void wait_on_response(SOCKET server, int expecting) {
             exit(1);
         }
 
-
-        if (p - response > 4) {
-            char *k;
-            for (k = response; k < end-3; ++k) {
-                if (k == response || k[-1] == '\n') {
-                    if (isdigit(k[0]) && isdigit(k[1]) && isdigit(k[2])) {
-                        if (k[3] != '-') {
-                            if (strstr(k, "\r\n")) {
-                                code = strtol(k, 0, 10);
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-    } while (code == 0);
-
+    } while (0 == (code = parse_response(response, p, end)));
 
     if (code != expecting) {
         fprintf(stderr, "Error from server:\n");
