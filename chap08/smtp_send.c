@@ -24,6 +24,7 @@
 
 #include "chap08.h"
 #include <ctype.h>
+#include <stdarg.h>
 
 #define MAXINPUT 512
 
@@ -101,7 +102,7 @@ void get_input(const char *prompt, char *buffer)
     buffer[0] = 0;
     fgets(buffer, MAXINPUT, stdin);
     const int read = strlen(buffer);
-    if (read > 0 && buffer[read-1] == '\n')
+    if (read > 0)
         buffer[read-1] = 0;
 }
 
@@ -161,7 +162,7 @@ int main() {
 #endif
 
 
-    char hostname[MAXINPUT] = {};
+    char hostname[MAXINPUT];
     get_input("mail server: ", hostname);
 
     printf("Connecting to host: %s:25\n", hostname);
@@ -174,12 +175,12 @@ int main() {
 
 
 
-    char sender[MAXINPUT] = {};
+    char sender[MAXINPUT];
     get_input("from: ", sender);
     send_format(server, "MAIL FROM:<%s>\r\n", sender);
     wait_on_response(server, 250);
 
-    char recipient[MAXINPUT] = {};
+    char recipient[MAXINPUT];
     get_input("to: ", recipient);
     send_format(server, "RCPT TO:<%s>\r\n", recipient);
     wait_on_response(server, 250);
@@ -187,7 +188,7 @@ int main() {
     send_format(server, "DATA\r\n");
     wait_on_response(server, 354);
 
-    char subject[MAXINPUT] = {};
+    char subject[MAXINPUT];
     get_input("subject: ", subject);
 
 
@@ -216,7 +217,7 @@ int main() {
     printf("Enter your email text, end with \".\" on a line by itself.\n");
 
     while (1) {
-        char body[MAXINPUT] = {};
+        char body[MAXINPUT];
         get_input("> ", body);
         send_format(server, "%s\r\n", body);
         if (strcmp(body, ".") == 0) {
