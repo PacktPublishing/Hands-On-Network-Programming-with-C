@@ -30,16 +30,40 @@
 #define MAXRESPONSE 1024
 
 
-int parse_response(const char *response, const char *p, const char *end) {
-    if (p - response > 4) {
-        const char *k;
-        for (k = response; k < end-3; ++k) {
-            if (k == response || k[-1] == '\n') {
-                if (isdigit(k[0]) && isdigit(k[1]) && isdigit(k[2])) {
-                    if (k[3] != '-') {
-                        if (strstr(k, "\r\n")) {
-                            return strtol(k, 0, 10);
-                        }
+void get_input(const char *prompt, char *buffer)
+{
+    printf("%s", prompt);
+
+    buffer[0] = 0;
+    fgets(buffer, MAXINPUT, stdin);
+    const int read = strlen(buffer);
+    if (read > 0)
+        buffer[read-1] = 0;
+}
+
+
+void send_format(SOCKET server, const char *text, ...) {
+    char buffer[1024];
+    va_list args;
+    va_start(args, text);
+    vsprintf(buffer, text, args);
+    va_end(args);
+
+    send(server, buffer, strlen(buffer), 0);
+
+    printf("C: %s", buffer);
+}
+
+
+int parse_response(const char *response) {
+    const char *k = response;
+    if (!k[0] || !k[1] || !k[2]) return 0;
+    for (; k[3]; ++k) {
+        if (k == response || k[-1] == '\n') {
+            if (isdigit(k[0]) && isdigit(k[1]) && isdigit(k[2])) {
+                if (k[3] != '-') {
+                    if (strstr(k, "\r\n")) {
+                        return strtol(k, 0, 10);
                     }
                 }
             }
@@ -72,7 +96,9 @@ void wait_on_response(SOCKET server, int expecting) {
             exit(1);
         }
 
-    } while (0 == (code = parse_response(response, p, end)));
+        code = parse_response(response);
+
+    } while (code == 0);
 
     if (code != expecting) {
         fprintf(stderr, "Error from server:\n");
@@ -83,29 +109,6 @@ void wait_on_response(SOCKET server, int expecting) {
     printf("S: %s", response);
 }
 
-void send_format(SOCKET server, const char *text, ...) {
-    char buffer[1024];
-    va_list args;
-    va_start(args, text);
-    vsprintf(buffer, text, args);
-    va_end(args);
-
-    send(server, buffer, strlen(buffer), 0);
-
-    printf("C: %s", buffer);
-}
-
-
-void get_input(const char *prompt, char *buffer)
-{
-    printf("%s", prompt);
-
-    buffer[0] = 0;
-    fgets(buffer, MAXINPUT, stdin);
-    const int read = strlen(buffer);
-    if (read > 0)
-        buffer[read-1] = 0;
-}
 
 
 SOCKET connect_to_host(const char *hostname, const char *port) {
@@ -206,7 +209,7 @@ int main() {
     timeinfo = gmtime(&timer);
 
     char date[128];
-    strftime (date, 128, "%a, %d %b %Y %H:%M:%S +0000", timeinfo);
+    strftime(date, 128, "%a, %d %b %Y %H:%M:%S +0000", timeinfo);
 
     send_format(server, "Date:%s\r\n", date);
 
