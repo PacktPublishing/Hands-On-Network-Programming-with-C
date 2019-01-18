@@ -246,3 +246,15 @@ del web_server2.exe
 del web_server2.cpp
 cd ..
 
+
+cd chap08
+copy smtp_send.c smtp_send.cpp
+echo "%CC%"
+%CC% smtp_send.c -o smtp_send.exe %CEXTRA%
+REM smtp_send.exe
+del smtp_send.exe
+%CC% smtp_send.cpp -o smtp_send.exe %CEXTRA%
+REM smtp_send.exe
+del smtp_send.exe
+del smtp_send.cpp
+cd ..
