@@ -54,3 +54,7 @@ Windows, gcc and clang on Linux and macOS.
 
 * **chap07/web_server.c** A minimal web server.
 * **chap07/web_server2.c** A minimal web server (no globals).
+
+## Chapter 8
+
+* **chap08/smtp_send.c** A simple email sender.
