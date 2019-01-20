@@ -145,7 +145,7 @@ int main(int argc, char *argv[]) {
 
 
     if (argc < 2) {
-        fprintf(stderr, "usage: tcp_client url\n");
+        fprintf(stderr, "usage: web_get url\n");
         return 1;
     }
     char *url = argv[1];
