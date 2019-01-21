@@ -226,4 +226,14 @@ cd ..
 
 
 
+cd chap08
+echo
+cp smtp_send.c smtp_send.cpp
+${CC} -Wall -Wextra smtp_send.c -o smtp_send; timeout 5s ./smtp_send; rm smtp_send
+echo
+${CC} -Wall -Wextra smtp_send.cpp -o smtp_send; timeout 5s ./smtp_send; rm smtp_send
+rm smtp_send.cpp
+echo
+echo
+cd ..
 
