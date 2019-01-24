@@ -252,7 +252,7 @@ int main(int argc, char *argv[]) {
                     printf("%.*s", (int)(end - body), body);
                 }
 
-                printf("\nConnection connection by peer.\n");
+                printf("\nConnection closed by peer.\n");
                 break;
             }
 
