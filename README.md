@@ -58,3 +58,20 @@ Windows, gcc and clang on Linux and macOS.
 ## Chapter 8
 
 * **[chap08/smtp_send.c](chap08/smtp_send.c)** A simple email sender.
+
+## Chapter 9
+
+The examples in this chapter use OpenSSL. Be sure to link against the OpenSSL
+libraries when compiling (`-lssl -lcrypto`).
+
+* **[chap09/openssl_version.c](chap09/openssl_version.c)** A program to report the installed OpenSSL version.
+* **[chap09/https_simple.c](chap09/https_simple.c)** A minimal program that requests a web page using HTTPS.
+* **[chap09/https_get.c](chap09/https_get.c)** The HTTP client of chapter 6 modified to use HTTPS.
+* **[chap09/tls_client.c](chap09/tls_client.c)** The TCP client program of chapter 3 modified to use TLS/SSL.
+
+## Chapter 10
+
+The examples in this chapter use OpenSSL. Be sure to link against the OpenSSL
+libraries when compiling (`-lssl -lcrypto`).
+
+* **[chap10/tls_time_server.c](chap10/tls_time_server.c)** The time server of chapter 2 modified to use HTTPS.
