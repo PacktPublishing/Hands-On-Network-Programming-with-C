@@ -68,6 +68,7 @@ libraries when compiling (`-lssl -lcrypto`).
 * **[chap09/https_simple.c](chap09/https_simple.c)** A minimal program that requests a web page using HTTPS.
 * **[chap09/https_get.c](chap09/https_get.c)** The HTTP client of chapter 6 modified to use HTTPS.
 * **[chap09/tls_client.c](chap09/tls_client.c)** The TCP client program of chapter 3 modified to use TLS/SSL.
+* **[chap09/tls_get_cert.c](chap09/tls_get_cert.c)** Prints a certificate from a TLS/SSL server.
 
 ## Chapter 10
 
