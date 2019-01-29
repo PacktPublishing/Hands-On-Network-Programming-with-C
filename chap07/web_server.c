@@ -136,7 +136,7 @@ void drop_client(struct client_info *client) {
             free(client);
             return;
         }
-        p = &client->next;
+        p = &(*p)->next;
     }
 
     fprintf(stderr, "drop_client not found.\n");
