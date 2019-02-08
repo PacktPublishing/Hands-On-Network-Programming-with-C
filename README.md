@@ -76,3 +76,4 @@ The examples in this chapter use OpenSSL. Be sure to link against the OpenSSL
 libraries when compiling (`-lssl -lcrypto`).
 
 * **[chap10/tls_time_server.c](chap10/tls_time_server.c)** The time server of chapter 2 modified to use HTTPS.
+* **[chap10/https_server.c](chap10/https_server.c)** The web server of chapter 7 modified to use HTTPS.
