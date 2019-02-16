@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#include "chap07.h"
+#include "chap10.h"
 
 
 const char *get_content_type(const char* path) {
@@ -93,6 +93,7 @@ struct client_info {
     socklen_t address_length;
     struct sockaddr_storage address;
     SOCKET socket;
+    SSL *ssl;
     char request[MAX_REQUEST_SIZE + 1];
     int received;
     struct client_info *next;
@@ -121,12 +122,15 @@ struct client_info *get_client(SOCKET s) {
     n->address_length = sizeof(n->address);
     n->next = clients;
     clients = n;
+    printf("New client %p\n", n);
     return n;
 }
 
 
 void drop_client(struct client_info *client) {
+    SSL_shutdown(client->ssl);
     CLOSESOCKET(client->socket);
+    SSL_free(client->ssl);
 
     struct client_info **p = &clients;
 
@@ -139,7 +143,6 @@ void drop_client(struct client_info *client) {
         p = &(*p)->next;
     }
 
-    fprintf(stderr, "drop_client not found.\n");
     exit(1);
 }
 
@@ -184,7 +187,7 @@ void send_400(struct client_info *client) {
     const char *c400 = "HTTP/1.1 400 Bad Request\r\n"
         "Connection: close\r\n"
         "Content-Length: 11\r\n\r\nBad Request";
-    send(client->socket, c400, strlen(c400), 0);
+    SSL_write(client->ssl, c400, strlen(c400));
     drop_client(client);
 }
 
@@ -192,7 +195,7 @@ void send_404(struct client_info *client) {
     const char *c404 = "HTTP/1.1 404 Not Found\r\n"
         "Connection: close\r\n"
         "Content-Length: 9\r\n\r\nNot Found";
-    send(client->socket, c404, strlen(c404), 0);
+    SSL_write(client->ssl, c404, strlen(c404));
     drop_client(client);
 }
 
@@ -215,7 +218,7 @@ void serve_resource(struct client_info *client, const char *path) {
     }
 
     char full_path[128];
-    sprintf(full_path, "public%s", path);
+    sprintf(full_path, "../chap07/public%s", path);
 
 #if defined(_WIN32)
     char *p = full_path;
@@ -242,23 +245,23 @@ void serve_resource(struct client_info *client, const char *path) {
     char buffer[BSIZE];
 
     sprintf(buffer, "HTTP/1.1 200 OK\r\n");
-    send(client->socket, buffer, strlen(buffer), 0);
+    SSL_write(client->ssl, buffer, strlen(buffer));
 
     sprintf(buffer, "Connection: close\r\n");
-    send(client->socket, buffer, strlen(buffer), 0);
+    SSL_write(client->ssl, buffer, strlen(buffer));
 
     sprintf(buffer, "Content-Length: %u\r\n", cl);
-    send(client->socket, buffer, strlen(buffer), 0);
+    SSL_write(client->ssl, buffer, strlen(buffer));
 
     sprintf(buffer, "Content-Type: %s\r\n", ct);
-    send(client->socket, buffer, strlen(buffer), 0);
+    SSL_write(client->ssl, buffer, strlen(buffer));
 
     sprintf(buffer, "\r\n");
-    send(client->socket, buffer, strlen(buffer), 0);
+    SSL_write(client->ssl, buffer, strlen(buffer));
 
     int r = fread(buffer, 1, BSIZE, fp);
     while (r) {
-        send(client->socket, buffer, r, 0);
+        SSL_write(client->ssl, buffer, r);
         r = fread(buffer, 1, BSIZE, fp);
     }
 
@@ -277,7 +280,29 @@ int main() {
     }
 #endif
 
+
+
+    SSL_library_init();
+    OpenSSL_add_all_algorithms();
+    SSL_load_error_strings();
+
+    SSL_CTX *ctx = SSL_CTX_new(TLS_server_method());
+    if (!ctx) {
+        fprintf(stderr, "SSL_CTX_new() failed.\n");
+        return 1;
+    }
+
+
+    if (!SSL_CTX_use_certificate_file(ctx, "cert.pem" , SSL_FILETYPE_PEM)
+    || !SSL_CTX_use_PrivateKey_file(ctx, "key.pem", SSL_FILETYPE_PEM)) {
+        fprintf(stderr, "SSL_CTX_use_certificate_file() failed.\n");
+        ERR_print_errors_fp(stderr);
+        return 1;
+    }
+
+
     SOCKET server = create_socket(0, "8080");
+
 
     while(1) {
 
@@ -298,8 +323,24 @@ int main() {
             }
 
 
-            printf("New connection from %s.\n",
-                    get_client_address(client));
+            client->ssl = SSL_new(ctx);
+            if (!ctx) {
+                fprintf(stderr, "SSL_new() failed.\n");
+                return 1;
+            }
+
+            SSL_set_fd(client->ssl, client->socket);
+            if (SSL_accept(client->ssl) != 1) {
+                //SSL_get_error(client->ssl, SSL_accept(...));
+                ERR_print_errors_fp(stderr);
+                drop_client(client);
+            } else {
+                printf("New connection from %s.\n",
+                        get_client_address(client));
+
+                printf ("SSL connection using %s\n",
+                        SSL_get_cipher(client->ssl));
+            }
         }
 
 
@@ -314,9 +355,9 @@ int main() {
                     continue;
                 }
 
-                int r = recv(client->socket,
+                int r = SSL_read(client->ssl,
                         client->request + client->received,
-                        MAX_REQUEST_SIZE - client->received, 0);
+                        MAX_REQUEST_SIZE - client->received);
 
                 if (r < 1) {
                     printf("Unexpected disconnect from %s.\n",
@@ -355,7 +396,7 @@ int main() {
 
     printf("\nClosing socket...\n");
     CLOSESOCKET(server);
-
+    SSL_CTX_free(ctx);
 
 #if defined(_WIN32)
     WSACleanup();

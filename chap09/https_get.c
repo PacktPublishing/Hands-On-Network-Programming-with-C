@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#include "chap06.h"
+#include "chap09.h"
 
 #define TIMEOUT 5.0
 
@@ -42,9 +42,9 @@ void parse_url(char *url, char **hostname, char **port, char** path) {
     }
 
     if (protocol) {
-        if (strcmp(protocol, "http")) {
+        if (strcmp(protocol, "https")) {
             fprintf(stderr,
-                    "Unknown protocol '%s'. Only 'http' is supported.\n",
+                    "Unknown protocol '%s'. Only 'https' is supported.\n",
                     protocol);
             exit(1);
         }
@@ -53,7 +53,7 @@ void parse_url(char *url, char **hostname, char **port, char** path) {
     *hostname = p;
     while (*p && *p != ':' && *p != '/' && *p != '#') ++p;
 
-    *port = "80";
+    *port = "443";
     if (*p == ':') {
         *p++ = 0;
         *port = p;
@@ -75,16 +75,16 @@ void parse_url(char *url, char **hostname, char **port, char** path) {
 }
 
 
-void send_request(SOCKET s, char *hostname, char *port, char *path) {
+void send_request(SSL *s, char *hostname, char *port, char *path) {
     char buffer[2048];
 
     sprintf(buffer, "GET /%s HTTP/1.1\r\n", path);
     sprintf(buffer + strlen(buffer), "Host: %s:%s\r\n", hostname, port);
     sprintf(buffer + strlen(buffer), "Connection: close\r\n");
-    sprintf(buffer + strlen(buffer), "User-Agent: honpwc web_get 1.0\r\n");
+    sprintf(buffer + strlen(buffer), "User-Agent: honpwc https_get 1.0\r\n");
     sprintf(buffer + strlen(buffer), "\r\n");
 
-    send(s, buffer, strlen(buffer), 0);
+    SSL_write(s, buffer, strlen(buffer));
     printf("Sent Headers:\n%s", buffer);
 }
 
@@ -143,6 +143,15 @@ int main(int argc, char *argv[]) {
     }
 #endif
 
+    SSL_library_init();
+    OpenSSL_add_all_algorithms();
+    SSL_load_error_strings();
+
+    SSL_CTX *ctx = SSL_CTX_new(TLS_client_method());
+    if (!ctx) {
+        fprintf(stderr, "SSL_CTX_new() failed.\n");
+        return 1;
+    }
 
     if (argc < 2) {
         fprintf(stderr, "usage: web_get url\n");
@@ -154,7 +163,50 @@ int main(int argc, char *argv[]) {
     parse_url(url, &hostname, &port, &path);
 
     SOCKET server = connect_to_host(hostname, port);
-    send_request(server, hostname, port, path);
+
+
+    SSL *ssl = SSL_new(ctx);
+    if (!ctx) {
+        fprintf(stderr, "SSL_new() failed.\n");
+        return 1;
+    }
+
+    if (!SSL_set_tlsext_host_name(ssl, hostname)) {
+        fprintf(stderr, "SSL_set_tlsext_host_name() failed.\n");
+        ERR_print_errors_fp(stderr);
+        return 1;
+    }
+
+    SSL_set_fd(ssl, server);
+    if (SSL_connect(ssl) == -1) {
+        fprintf(stderr, "SSL_connect() failed.\n");
+        ERR_print_errors_fp(stderr);
+        return 1;
+    }
+
+    printf ("SSL/TLS using %s\n", SSL_get_cipher(ssl));
+
+
+    X509 *cert = SSL_get_peer_certificate(ssl);
+    if (!cert) {
+        fprintf(stderr, "SSL_get_peer_certificate() failed.\n");
+        return 1;
+    }
+
+    char *tmp;
+    if ((tmp = X509_NAME_oneline(X509_get_subject_name(cert), 0, 0))) {
+        printf("subject: %s\n", tmp);
+        OPENSSL_free(tmp);
+    }
+
+    if ((tmp = X509_NAME_oneline(X509_get_issuer_name(cert), 0, 0))) {
+        printf("issuer: %s\n", tmp);
+        OPENSSL_free(tmp);
+    }
+
+    X509_free(cert);
+
+    send_request(ssl, hostname, port, path);
 
     const clock_t start_time = clock();
 
@@ -194,7 +246,7 @@ int main(int argc, char *argv[]) {
         }
 
         if (FD_ISSET(server, &reads)) {
-            int bytes_received = recv(server, p, end - p, 0);
+            int bytes_received = SSL_read(ssl, p, end - p);
             if (bytes_received < 1) {
                 if (encoding == connection && body) {
                     printf("%.*s", (int)(end - body), body);
@@ -265,7 +317,10 @@ int main(int argc, char *argv[]) {
 finish:
 
     printf("\nClosing socket...\n");
+    SSL_shutdown(ssl);
     CLOSESOCKET(server);
+    SSL_free(ssl);
+    SSL_CTX_free(ctx);
 
 #if defined(_WIN32)
     WSACleanup();

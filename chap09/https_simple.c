@@ -22,11 +22,8 @@
  * SOFTWARE.
  */
 
-#include "chap04.h"
+#include "chap09.h"
 
-#if defined(_WIN32)
-#include <conio.h>
-#endif
 
 int main(int argc, char *argv[]) {
 
@@ -38,21 +35,34 @@ int main(int argc, char *argv[]) {
     }
 #endif
 
-    if (argc < 3) {
-        fprintf(stderr, "usage: udp_client hostname port\n");
+    SSL_library_init();
+    OpenSSL_add_all_algorithms();
+    SSL_load_error_strings();
+
+    SSL_CTX *ctx = SSL_CTX_new(TLS_client_method());
+    if (!ctx) {
+        fprintf(stderr, "SSL_CTX_new() failed.\n");
         return 1;
     }
+
+    if (argc < 3) {
+        fprintf(stderr, "usage: https_simple hostname port\n");
+        return 1;
+    }
+
+    char *hostname = argv[1];
+    char *port = argv[2];
+
 
     printf("Configuring remote address...\n");
     struct addrinfo hints;
     memset(&hints, 0, sizeof(hints));
-    hints.ai_socktype = SOCK_DGRAM;
+    hints.ai_socktype = SOCK_STREAM;
     struct addrinfo *peer_address;
-    if (getaddrinfo(argv[1], argv[2], &hints, &peer_address)) {
+    if (getaddrinfo(hostname, port, &hints, &peer_address)) {
         fprintf(stderr, "getaddrinfo() failed. (%d)\n", GETSOCKETERRNO());
-        return 1;
+        exit(1);
     }
-
 
     printf("Remote address is: ");
     char address_buffer[100];
@@ -63,72 +73,96 @@ int main(int argc, char *argv[]) {
             NI_NUMERICHOST);
     printf("%s %s\n", address_buffer, service_buffer);
 
-
     printf("Creating socket...\n");
-    SOCKET socket_peer;
-    socket_peer = socket(peer_address->ai_family,
+    SOCKET server;
+    server = socket(peer_address->ai_family,
             peer_address->ai_socktype, peer_address->ai_protocol);
-    if (!ISVALIDSOCKET(socket_peer)) {
+    if (!ISVALIDSOCKET(server)) {
         fprintf(stderr, "socket() failed. (%d)\n", GETSOCKETERRNO());
-        return 1;
+        exit(1);
     }
 
-
     printf("Connecting...\n");
-    if (connect(socket_peer,
+    if (connect(server,
                 peer_address->ai_addr, peer_address->ai_addrlen)) {
         fprintf(stderr, "connect() failed. (%d)\n", GETSOCKETERRNO());
-        return 1;
+        exit(1);
     }
     freeaddrinfo(peer_address);
 
-    printf("Connected.\n");
-    printf("To send data, enter text followed by enter.\n");
+    printf("Connected.\n\n");
+
+
+    SSL *ssl = SSL_new(ctx);
+    if (!ctx) {
+        fprintf(stderr, "SSL_new() failed.\n");
+        return 1;
+    }
+
+    if (!SSL_set_tlsext_host_name(ssl, hostname)) {
+        fprintf(stderr, "SSL_set_tlsext_host_name() failed.\n");
+        ERR_print_errors_fp(stderr);
+        return 1;
+    }
+
+    SSL_set_fd(ssl, server);
+    if (SSL_connect(ssl) == -1) {
+        fprintf(stderr, "SSL_connect() failed.\n");
+        ERR_print_errors_fp(stderr);
+        return 1;
+    }
+
+    printf ("SSL/TLS using %s\n", SSL_get_cipher(ssl));
+
+
+    X509 *cert = SSL_get_peer_certificate(ssl);
+    if (!cert) {
+        fprintf(stderr, "SSL_get_peer_certificate() failed.\n");
+        return 1;
+    }
+
+    char *tmp;
+    if ((tmp = X509_NAME_oneline(X509_get_subject_name(cert), 0, 0))) {
+        printf("subject: %s\n", tmp);
+        OPENSSL_free(tmp);
+    }
+
+    if ((tmp = X509_NAME_oneline(X509_get_issuer_name(cert), 0, 0))) {
+        printf("issuer: %s\n", tmp);
+        OPENSSL_free(tmp);
+    }
+
+    X509_free(cert);
+
+
+    char buffer[2048];
+
+    sprintf(buffer, "GET / HTTP/1.1\r\n");
+    sprintf(buffer + strlen(buffer), "Host: %s:%s\r\n", hostname, port);
+    sprintf(buffer + strlen(buffer), "Connection: close\r\n");
+    sprintf(buffer + strlen(buffer), "User-Agent: https_simple\r\n");
+    sprintf(buffer + strlen(buffer), "\r\n");
+
+    SSL_write(ssl, buffer, strlen(buffer));
+    printf("Sent Headers:\n%s", buffer);
 
     while(1) {
-
-        fd_set reads;
-        FD_ZERO(&reads);
-        FD_SET(socket_peer, &reads);
-#if !defined(_WIN32)
-        FD_SET(0, &reads);
-#endif
-
-        struct timeval timeout;
-        timeout.tv_sec = 0;
-        timeout.tv_usec = 100000;
-
-        if (select(socket_peer+1, &reads, 0, 0, &timeout) < 0) {
-            fprintf(stderr, "select() failed. (%d)\n", GETSOCKETERRNO());
-            return 1;
-        }
-
-        if (FD_ISSET(socket_peer, &reads)) {
-            char read[4096];
-            int bytes_received = recv(socket_peer, read, 4096, 0);
+        int bytes_received = SSL_read(ssl, buffer, sizeof(buffer));
             if (bytes_received < 1) {
-                printf("Connection closed by peer.\n");
+                printf("\nConnection closed by peer.\n");
                 break;
             }
-            printf("Received (%d bytes): %.*s",
-                    bytes_received, bytes_received, read);
-        }
 
-#if defined(_WIN32)
-        if(_kbhit()) {
-#else
-        if(FD_ISSET(0, &reads)) {
-#endif
-            char read[4096];
-            if (!fgets(read, 4096, stdin)) break;
-            printf("Sending: %s", read);
-            int bytes_sent = send(socket_peer, read, strlen(read), 0);
-            printf("Sent %d bytes.\n", bytes_sent);
-        }
+            printf("Received (%d bytes): '%.*s'\n",
+                    bytes_received, bytes_received, buffer);
+
     } //end while(1)
 
-    printf("Closing socket...\n");
-    CLOSESOCKET(socket_peer);
+    printf("\nClosing socket...\n");
+    SSL_shutdown(ssl);
+    CLOSESOCKET(server);
+    SSL_free(ssl);
+    SSL_CTX_free(ctx);
 
 #if defined(_WIN32)
     WSACleanup();

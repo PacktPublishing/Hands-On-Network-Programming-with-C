@@ -311,6 +311,8 @@ int main() {
 
         struct client_info *client = client_list;
         while(client) {
+            struct client_info *next = client;
+
             if (FD_ISSET(client->socket, &reads)) {
 
                 if (MAX_REQUEST_SIZE == client->received) {
@@ -351,7 +353,7 @@ int main() {
                 }
             }
 
-            client = client->next;
+            client = next;
         }
 
     } //while(1)
