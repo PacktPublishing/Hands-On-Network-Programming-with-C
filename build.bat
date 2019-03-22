@@ -267,10 +267,12 @@ cd chap13
 copy connect_timeout.c connect_timeout.cpp
 echo "%CC%"
 %CC% connect_timeout.c -o connect_timeout.exe %CEXTRA%
-REM connect_timeout.exe
+connect_timeout.exe example.com 80
+connect_timeout.exe example.com 81
 del connect_timeout.exe
 %CC% connect_timeout.cpp -o connect_timeout.exe %CEXTRA%
-REM connect_timeout.exe
+connect_timeout.exe example.com 80
+connect_timeout.exe example.com 81
 del connect_timeout.exe
 del connect_timeout.cpp
 cd ..
@@ -280,10 +282,12 @@ cd chap13
 copy connect_blocking.c connect_blocking.cpp
 echo "%CC%"
 %CC% connect_blocking.c -o connect_blocking.exe %CEXTRA%
-REM connect_blocking.exe
+connect_blocking.exe example.com 80
+connect_blocking.exe example.com 81
 del connect_blocking.exe
 %CC% connect_blocking.cpp -o connect_blocking.exe %CEXTRA%
-REM connect_blocking.exe
+connect_blocking.exe example.com 80
+connect_blocking.exe example.com 81
 del connect_blocking.exe
 del connect_blocking.cpp
 cd ..
