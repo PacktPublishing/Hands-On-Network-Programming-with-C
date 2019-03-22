@@ -77,3 +77,12 @@ libraries when compiling (`-lssl -lcrypto`).
 
 * **[chap10/tls_time_server.c](chap10/tls_time_server.c)** The time server of chapter 2 modified to use HTTPS.
 * **[chap10/https_server.c](chap10/https_server.c)** The web server of chapter 7 modified to use HTTPS.
+
+## Chapter 12
+
+This chapter doesn't include any example programs.
+
+## Chapter 13
+
+* **[chap13/connect_timeout.c](chap13/connect_timeout.c)** Shows how to timeout a `connect()` call early.
+* **[chap13/connect_blocking.c](chap13/connect_blocking.c)** Typical setup, included for comparison against **connect_timeout.c**.

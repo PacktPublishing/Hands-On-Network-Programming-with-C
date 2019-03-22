@@ -237,3 +237,28 @@ echo
 echo
 cd ..
 
+
+
+
+cd chap13
+echo
+cp connect_timeout.c connect_timeout.cpp
+${CC} -Wall -Wextra connect_timeout.c -o connect_timeout; time ./connect_timeout; rm connect_timeout
+echo
+${CC} -Wall -Wextra connect_timeout.cpp -o connect_timeout; time 5s ./connect_timeout; rm connect_timeout
+rm connect_timeout.cpp
+echo
+echo
+cd ..
+
+
+cd chap13
+echo
+cp connect_blocking.c connect_blocking.cpp
+${CC} -Wall -Wextra connect_blocking.c -o connect_blocking; time ./connect_blocking; rm connect_blocking
+echo
+${CC} -Wall -Wextra connect_blocking.cpp -o connect_blocking; time 5s ./connect_blocking; rm connect_blocking
+rm connect_blocking.cpp
+echo
+echo
+cd ..
