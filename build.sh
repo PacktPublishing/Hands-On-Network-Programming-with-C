@@ -243,9 +243,15 @@ cd ..
 cd chap13
 echo
 cp connect_timeout.c connect_timeout.cpp
-${CC} -Wall -Wextra connect_timeout.c -o connect_timeout; time ./connect_timeout; rm connect_timeout
+${CC} -Wall -Wextra connect_timeout.c -o connect_timeout
+time ./connect_timeout; rm connect_timeout example.com 80
+time ./connect_timeout; rm connect_timeout example.com 81
+rm connect_timeout
 echo
-${CC} -Wall -Wextra connect_timeout.cpp -o connect_timeout; time ./connect_timeout; rm connect_timeout
+${CC} -Wall -Wextra connect_timeout.cpp -o connect_timeout
+time ./connect_timeout; rm connect_timeout example.com 80
+time ./connect_timeout; rm connect_timeout example.com 81
+rm connect_timeout
 rm connect_timeout.cpp
 echo
 echo
@@ -255,10 +261,41 @@ cd ..
 cd chap13
 echo
 cp connect_blocking.c connect_blocking.cpp
-${CC} -Wall -Wextra connect_blocking.c -o connect_blocking; time ./connect_blocking; rm connect_blocking
+${CC} -Wall -Wextra connect_blocking.c -o connect_blocking
+time ./connect_blocking; rm connect_blocking example.com 80
+time ./connect_blocking; rm connect_blocking example.com 81
+rm connect_blocking
 echo
-${CC} -Wall -Wextra connect_blocking.cpp -o connect_blocking; time ./connect_blocking; rm connect_blocking
+${CC} -Wall -Wextra connect_blocking.cpp -o connect_blocking
+time ./connect_blocking; rm connect_blocking example.com 80
+time ./connect_blocking; rm connect_blocking example.com 81
+rm connect_blocking
 rm connect_blocking.cpp
+echo
+echo
+cd ..
+
+
+
+cd chap13
+echo
+cp server_reuse.c server_reuse.cpp
+${CC} -Wall -Wextra server_reuse.c -o server_reuse; timeout 2s ./server_reuse; rm server_reuse
+echo
+${CC} -Wall -Wextra server_reuse.cpp -o server_reuse; timeout 2s ./server_reuse; rm server_reuse
+rm server_reuse.cpp
+echo
+echo
+cd ..
+
+
+cd chap13
+echo
+cp server_noreuse.c server_noreuse.cpp
+${CC} -Wall -Wextra server_noreuse.c -o server_noreuse; timeout 2s ./server_noreuse; rm server_noreuse
+echo
+${CC} -Wall -Wextra server_noreuse.cpp -o server_noreuse; timeout 2s ./server_noreuse; rm server_noreuse
+rm server_noreuse.cpp
 echo
 echo
 cd ..

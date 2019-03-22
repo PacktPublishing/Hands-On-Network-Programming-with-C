@@ -291,3 +291,29 @@ connect_blocking.exe example.com 81
 del connect_blocking.exe
 del connect_blocking.cpp
 cd ..
+
+
+cd chap13
+copy server_reuse.c server_reuse.cpp
+echo "%CC%"
+%CC% server_reuse.c -o server_reuse.exe %CEXTRA%
+REM server_reuse.exe
+del server_reuse.exe
+%CC% server_reuse.cpp -o server_reuse.exe %CEXTRA%
+REM server_reuse.exe
+del server_reuse.exe
+del server_reuse.cpp
+cd ..
+
+
+cd chap13
+copy server_noreuse.c server_noreuse.cpp
+echo "%CC%"
+%CC% server_noreuse.c -o server_noreuse.exe %CEXTRA%
+REM server_noreuse.exe
+del server_noreuse.exe
+%CC% server_noreuse.cpp -o server_noreuse.exe %CEXTRA%
+REM server_noreuse.exe
+del server_noreuse.exe
+del server_noreuse.cpp
+cd ..

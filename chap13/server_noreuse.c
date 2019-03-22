@@ -34,61 +34,60 @@ int main(int argc, char *argv[]) {
     }
 #endif
 
-    if (argc < 3) {
-        fprintf(stderr, "usage: connect_timeout hostname port\n");
-        return 1;
-    }
-
-    printf("Configuring remote address...\n");
+    printf("Configuring local address...\n");
     struct addrinfo hints;
     memset(&hints, 0, sizeof(hints));
+    hints.ai_family = AF_INET;
     hints.ai_socktype = SOCK_STREAM;
-    struct addrinfo *peer_address;
-    if (getaddrinfo(argv[1], argv[2], &hints, &peer_address)) {
-        fprintf(stderr, "getaddrinfo() failed. (%d)\n", GETSOCKETERRNO());
-        return 1;
-    }
+    hints.ai_flags = AI_PASSIVE;
 
-
-    printf("Remote address is: ");
-    char address_buffer[100];
-    char service_buffer[100];
-    getnameinfo(peer_address->ai_addr, peer_address->ai_addrlen,
-            address_buffer, sizeof(address_buffer),
-            service_buffer, sizeof(service_buffer),
-            NI_NUMERICHOST);
-    printf("%s %s\n", address_buffer, service_buffer);
+    struct addrinfo *bind_address;
+    getaddrinfo(0, "8080", &hints, &bind_address);
 
 
     printf("Creating socket...\n");
-    SOCKET socket_peer;
-    socket_peer = socket(peer_address->ai_family,
-            peer_address->ai_socktype, peer_address->ai_protocol);
-    if (!ISVALIDSOCKET(socket_peer)) {
+    SOCKET socket_listen;
+    socket_listen = socket(bind_address->ai_family,
+            bind_address->ai_socktype, bind_address->ai_protocol);
+    if (!ISVALIDSOCKET(socket_listen)) {
         fprintf(stderr, "socket() failed. (%d)\n", GETSOCKETERRNO());
         return 1;
     }
 
 
-    printf("Connecting...\n");
-    if (connect(socket_peer,
-                peer_address->ai_addr, peer_address->ai_addrlen)) {
-        fprintf(stderr, "connect() failed. (%d)\n", GETSOCKETERRNO());
+    printf("Binding socket to local address...\n");
+    if (bind(socket_listen,
+                bind_address->ai_addr, bind_address->ai_addrlen)) {
+        fprintf(stderr, "bind() failed. (%d)\n", GETSOCKETERRNO());
+        return 1;
+    }
+    freeaddrinfo(bind_address);
+
+
+    printf("Listening...\n");
+    if (listen(socket_listen, 10) < 0) {
+        fprintf(stderr, "listen() failed. (%d)\n", GETSOCKETERRNO());
         return 1;
     }
 
-    freeaddrinfo(peer_address);
 
-    printf("Connected.\n");
+    while (1) {
+        printf("Waiting for connection...\n");
+        struct sockaddr_storage client_address;
+        socklen_t client_len = sizeof(client_address);
+        SOCKET socket_client = accept(socket_listen,
+                (struct sockaddr*) &client_address, &client_len);
+        if (!ISVALIDSOCKET(socket_client)) {
+            fprintf(stderr, "accept() failed. (%d)\n", GETSOCKETERRNO());
+            return 1;
+        }
 
-    printf("Closing socket...\n");
-    CLOSESOCKET(socket_peer);
 
-#if defined(_WIN32)
-    WSACleanup();
-#endif
+        printf("Client is connected.");
+        send(socket_client, "a", 1, 0);
+    }
 
-    printf("Finished.\n");
+
     return 0;
 }
 
