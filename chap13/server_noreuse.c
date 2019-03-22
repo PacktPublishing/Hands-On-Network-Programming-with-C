@@ -24,7 +24,7 @@
 
 #include "chap13.h"
 
-int main(int argc, char *argv[]) {
+int main() {
 
 #if defined(_WIN32)
     WSADATA d;

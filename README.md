@@ -85,4 +85,6 @@ This chapter doesn't include any example programs.
 ## Chapter 13
 
 * **[chap13/connect_timeout.c](chap13/connect_timeout.c)** Shows how to timeout a `connect()` call early.
-* **[chap13/connect_blocking.c](chap13/connect_blocking.c)** Typical setup, included for comparison against **connect_timeout.c**.
+* **[chap13/connect_blocking.c](chap13/connect_blocking.c)** For comparison with **connect_timeout.c**.
+* **[chap13/server_reuse.c](chap13/server_reuse.c)** Demonstrates the use of `SO_REUSEADDR`.
+* **[chap13/server_noreuse.c](chap13/server_noreuse.c)** For comparison with **server_reuse.c**.
