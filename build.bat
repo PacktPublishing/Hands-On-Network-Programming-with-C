@@ -317,3 +317,31 @@ REM server_noreuse.exe
 del server_noreuse.exe
 del server_noreuse.cpp
 cd ..
+
+
+
+cd chap13
+copy server_crash.c server_crash.cpp
+echo "%CC%"
+%CC% server_crash.c -o server_crash.exe %CEXTRA%
+REM server_crash.exe
+del server_crash.exe
+%CC% server_crash.cpp -o server_crash.exe %CEXTRA%
+REM server_crash.exe
+del server_crash.exe
+del server_crash.cpp
+cd ..
+
+
+
+cd chap13
+copy error_text.c error_text.cpp
+echo "%CC%"
+%CC% error_text.c -o error_text.exe %CEXTRA%
+REM error_text.exe
+del error_text.exe
+%CC% error_text.cpp -o error_text.exe %CEXTRA%
+REM error_text.exe
+del error_text.exe
+del error_text.cpp
+cd ..

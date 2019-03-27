@@ -299,3 +299,30 @@ rm server_noreuse.cpp
 echo
 echo
 cd ..
+
+
+
+
+cd chap13
+echo
+cp server_crash.c server_crash.cpp
+${CC} -Wall -Wextra server_crash.c -o server_crash; timeout 2s ./server_crash; rm server_crash
+echo
+${CC} -Wall -Wextra server_crash.cpp -o server_crash; timeout 2s ./server_crash; rm server_crash
+rm server_crash.cpp
+echo
+echo
+cd ..
+
+
+
+cd chap13
+echo
+cp error_text.c error_text.cpp
+${CC} -Wall -Wextra error_text.c -o error_text; ./error_text; rm error_text
+echo
+${CC} -Wall -Wextra error_text.cpp -o error_text; ./error_text; rm error_text
+rm error_text.cpp
+echo
+echo
+cd ..

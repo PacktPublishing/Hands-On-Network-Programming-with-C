@@ -88,3 +88,9 @@ This chapter doesn't include any example programs.
 * **[chap13/connect_blocking.c](chap13/connect_blocking.c)** For comparison with **connect_timeout.c**.
 * **[chap13/server_reuse.c](chap13/server_reuse.c)** Demonstrates the use of `SO_REUSEADDR`.
 * **[chap13/server_noreuse.c](chap13/server_noreuse.c)** For comparison with **server_reuse.c**.
+* **[chap13/server_crash.c](chap13/server_crash.c)** This server purposefully writes to a TCP socket after the client disconnects.
+* **[chap13/error_text.c](chap13/error_text.c)** Shows how to obtain error text.
+
+## Chapter 14
+
+This chapter doesn't include any example programs.

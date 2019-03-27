@@ -24,6 +24,11 @@
 
 #include "chap13.h"
 
+#if !defined(_WIN32)
+#include <signal.h>
+#endif
+
+
 int main() {
 
 #if defined(_WIN32)
@@ -71,22 +76,55 @@ int main() {
     }
 
 
-    while (1) {
-        printf("Waiting for connection...\n");
-        struct sockaddr_storage client_address;
-        socklen_t client_len = sizeof(client_address);
-        SOCKET socket_client = accept(socket_listen,
-                (struct sockaddr*) &client_address, &client_len);
-        if (!ISVALIDSOCKET(socket_client)) {
-            fprintf(stderr, "accept() failed. (%d)\n", GETSOCKETERRNO());
-            return 1;
-        }
-
-
-        printf("Client is connected.\n");
-        CLOSESOCKET(socket_client);
+    printf("Waiting for connection...\n");
+    struct sockaddr_storage client_address;
+    socklen_t client_len = sizeof(client_address);
+    SOCKET socket_client = accept(socket_listen,
+            (struct sockaddr*) &client_address, &client_len);
+    if (!ISVALIDSOCKET(socket_client)) {
+        fprintf(stderr, "accept() failed. (%d)\n", GETSOCKETERRNO());
+        return 1;
     }
 
+
+    printf("Client is connected.\n");
+    printf("Waiting for client to disconnect.\n");
+
+    int bytes_received;
+    while(1) {
+        char read[1024];
+        bytes_received = recv(socket_client, read, 1024, 0);
+        if (bytes_received < 1) {
+            break;
+        } else {
+            printf("Received %d bytes.\n", bytes_received);
+        }
+    }
+
+    printf("Client has disconnected.\n");
+    printf("recv() returned %d\n", bytes_received);
+
+    printf("Attempting to send first data.\n");
+
+    int sent;
+
+    sent = send(socket_client, "a", 1, 0);
+    if (sent != 1) {
+        fprintf(stderr, "first send() failed. (%d, %d)\n", sent, GETSOCKETERRNO());
+    }
+
+    printf("Attempting to send second data.\n");
+
+    sent = send(socket_client, "a", 1, 0);
+    if (sent != 1) {
+        fprintf(stderr, "second send() failed. (%d, %d)\n", sent, GETSOCKETERRNO());
+    }
+
+    printf("Closing socket.\n");
+
+    CLOSESOCKET(socket_client);
+
+    printf("Finished.\n");
 
     return 0;
 }

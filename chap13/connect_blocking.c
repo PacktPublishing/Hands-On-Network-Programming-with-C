@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
 #endif
 
     if (argc < 3) {
-        fprintf(stderr, "usage: connect_timeout hostname port\n");
+        fprintf(stderr, "usage: connect_blocking hostname port\n");
         return 1;
     }
 

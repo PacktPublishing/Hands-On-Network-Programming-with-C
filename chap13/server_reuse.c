@@ -87,8 +87,8 @@ int main() {
         }
 
 
-        printf("Client is connected.");
-        send(socket_client, "a", 1, 0);
+        printf("Client is connected.\n");
+        CLOSESOCKET(socket_client);
     }
 
 
