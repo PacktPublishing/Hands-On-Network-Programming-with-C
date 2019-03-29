@@ -89,7 +89,9 @@ This chapter doesn't include any example programs.
 * **[chap13/server_reuse.c](chap13/server_reuse.c)** Demonstrates the use of `SO_REUSEADDR`.
 * **[chap13/server_noreuse.c](chap13/server_noreuse.c)** For comparison with **server_reuse.c**.
 * **[chap13/server_crash.c](chap13/server_crash.c)** This server purposefully writes to a TCP socket after the client disconnects.
-* **[chap13/error_text.c](chap13/error_text.c)** Shows how to obtain error text.
+* **[chap13/error_text.c](chap13/error_text.c)** Shows how to obtain error code descriptions.
+* **[chap13/big_send.c](chap13/big_send.c)** TCP client. Sends lots of data after connecting. Used to show blocking behaviour of `send()`.
+* **[chap13/server_ignore.c](chap13/server_ignore.c)** TCP server. Accepts connections, then simply ignores them. Used to show blocking behaviour of `send()`.
 
 ## Chapter 14
 
