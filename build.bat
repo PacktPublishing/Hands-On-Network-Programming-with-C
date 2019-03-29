@@ -338,10 +338,38 @@ cd chap13
 copy error_text.c error_text.cpp
 echo "%CC%"
 %CC% error_text.c -o error_text.exe %CEXTRA%
-REM error_text.exe
+error_text.exe
 del error_text.exe
 %CC% error_text.cpp -o error_text.exe %CEXTRA%
-REM error_text.exe
+error_text.exe
 del error_text.exe
 del error_text.cpp
+cd ..
+
+
+
+cd chap13
+copy server_ignore.c server_ignore.cpp
+echo "%CC%"
+%CC% server_ignore.c -o server_ignore.exe %CEXTRA%
+REM server_ignore.exe
+del server_ignore.exe
+%CC% server_ignore.cpp -o server_ignore.exe %CEXTRA%
+REM server_ignore.exe
+del server_ignore.exe
+del server_ignore.cpp
+cd ..
+
+
+
+cd chap13
+copy big_send.c big_send.cpp
+echo "%CC%"
+%CC% big_send.c -o big_send.exe %CEXTRA%
+REM big_send.exe
+del big_send.exe
+%CC% big_send.cpp -o big_send.exe %CEXTRA%
+REM big_send.exe
+del big_send.exe
+del big_send.cpp
 cd ..

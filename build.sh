@@ -326,3 +326,29 @@ rm error_text.cpp
 echo
 echo
 cd ..
+
+
+
+cd chap13
+echo
+cp server_ignore.c server_ignore.cpp
+${CC} -Wall -Wextra server_ignore.c -o server_ignore; ./server_ignore; rm server_ignore
+echo
+${CC} -Wall -Wextra server_ignore.cpp -o server_ignore; ./server_ignore; rm server_ignore
+rm server_ignore.cpp
+echo
+echo
+cd ..
+
+
+
+cd chap13
+echo
+cp big_send.c big_send.cpp
+${CC} -Wall -Wextra big_send.c -o big_send; ./big_send; rm big_send
+echo
+${CC} -Wall -Wextra big_send.cpp -o big_send; ./big_send; rm big_send
+rm big_send.cpp
+echo
+echo
+cd ..
