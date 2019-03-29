@@ -57,8 +57,8 @@ int main() {
 
     printf("Binding socket to local address...\n");
 
-    char yes = 1;
-    if (setsockopt(socket_listen, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) < 0) {
+    int yes = 1;
+    if (setsockopt(socket_listen, SOL_SOCKET, SO_REUSEADDR, (void*)&yes, sizeof(yes)) < 0) {
         fprintf(stderr, "setsockopt() failed. (%d)\n", GETSOCKETERRNO());
     }
 

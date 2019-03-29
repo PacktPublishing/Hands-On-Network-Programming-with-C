@@ -56,10 +56,6 @@ int main() {
 
 
     printf("Binding socket to local address...\n");
-
-    char yes = 1;
-    setsockopt(socket_listen, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
-
     if (bind(socket_listen,
                 bind_address->ai_addr, bind_address->ai_addrlen)) {
         fprintf(stderr, "bind() failed. (%d)\n", GETSOCKETERRNO());
