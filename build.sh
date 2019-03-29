@@ -332,9 +332,9 @@ cd ..
 cd chap13
 echo
 cp server_ignore.c server_ignore.cpp
-${CC} -Wall -Wextra server_ignore.c -o server_ignore; ./server_ignore; rm server_ignore
+${CC} -Wall -Wextra server_ignore.c -o server_ignore; timeout 2s ./server_ignore; rm server_ignore
 echo
-${CC} -Wall -Wextra server_ignore.cpp -o server_ignore; ./server_ignore; rm server_ignore
+${CC} -Wall -Wextra server_ignore.cpp -o server_ignore; timeout 2s ./server_ignore; rm server_ignore
 rm server_ignore.cpp
 echo
 echo
