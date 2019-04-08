@@ -78,6 +78,16 @@ libraries when compiling (`-lssl -lcrypto`).
 * **[chap10/tls_time_server.c](chap10/tls_time_server.c)** The time server of chapter 2 modified to use HTTPS.
 * **[chap10/https_server.c](chap10/https_server.c)** The web server of chapter 7 modified to use HTTPS.
 
+## Chapter 11
+
+The examples in this chapter use libssh. Be sure to link against the libssh libraries when compiling (`-lssh`).
+
+* **[chap11/ssh_version.c](chap11/ssh_version.c)** A program to report the libssh version.
+* **[chap11/ssh_connect.c](chap11/ssh_connect.c)** A minimal client that establishes a ssh connection.
+* **[chap11/ssh_auth.c](chap11/ssh_auth.c)** A client which attempts authentication.
+* **[chap11/ssh_command.c](chap11/ssh_command.c)** A client that runs a single command over ssh.
+* **[chap11/ssh_download.c](chap11/ssh_download.c)** A client that downloads a file over ssh.
+
 
 ## Chapter 12
 
