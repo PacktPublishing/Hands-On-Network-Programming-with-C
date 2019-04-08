@@ -75,4 +75,4 @@ before_install:
     - ${CC} --version
 
 script:
-  - ./build.sh
+  - ./test/build.sh

@@ -45,4 +45,4 @@ before_build:
   - "%MATRIX_EVAL%"
 
 build_script:
-  - ./build.bat
+  - ./test/build.bat

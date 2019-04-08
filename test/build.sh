@@ -1,9 +1,9 @@
 echo
-cp id.c id.cpp
-${CC} -Wall -Wextra id.c -o id; ./id; rm id
+cp test/id.c test/id.cpp
+${CC} -Wall -Wextra test/id.c -o id; ./id; rm id
 echo
-${CC} -Wall -Wextra id.cpp -o id; ./id; rm id
-rm id.cpp
+${CC} -Wall -Wextra test/id.cpp -o id; ./id; rm id
+rm test/id.cpp
 echo
 echo
 
