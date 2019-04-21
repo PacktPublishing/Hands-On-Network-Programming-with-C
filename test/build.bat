@@ -373,3 +373,17 @@ REM big_send.exe
 del big_send.exe
 del big_send.cpp
 cd ..
+
+
+
+cd chap13
+copy setsize.c setsize.cpp
+echo "%CC%"
+%CC% setsize.c -o setsize.exe %CEXTRA%
+REM setsize.exe
+del setsize.exe
+%CC% setsize.cpp -o setsize.exe %CEXTRA%
+REM setsize.exe
+del setsize.exe
+del setsize.cpp
+cd ..

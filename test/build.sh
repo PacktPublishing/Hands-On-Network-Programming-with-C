@@ -352,3 +352,15 @@ rm big_send.cpp
 echo
 echo
 cd ..
+
+
+cd chap13
+echo
+cp setsize.c setsize.cpp
+${CC} -Wall -Wextra setsize.c -o setsize; ./setsize; rm setsize
+echo
+${CC} -Wall -Wextra setsize.cpp -o setsize; ./setsize; rm setsize
+rm setsize.cpp
+echo
+echo
+cd ..
