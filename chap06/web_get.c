@@ -186,7 +186,7 @@ int main(int argc, char *argv[]) {
 
         struct timeval timeout;
         timeout.tv_sec = 0;
-        timeout.tv_usec = 200;
+        timeout.tv_usec = 200000;
 
         if (select(server+1, &reads, 0, 0, &timeout) < 0) {
             fprintf(stderr, "select() failed. (%d)\n", GETSOCKETERRNO());
