@@ -103,6 +103,7 @@ This chapter doesn't include any example programs.
 * **[chap13/error_text.c](chap13/error_text.c)** Shows how to obtain error code descriptions.
 * **[chap13/big_send.c](chap13/big_send.c)** TCP client. Sends lots of data after connecting. Used to show blocking behaviour of `send()`.
 * **[chap13/server_ignore.c](chap13/server_ignore.c)** TCP server. Accepts connections, then simply ignores them. Used to show blocking behaviour of `send()`.
+* **[chap13/setsize.c](chap13/setsize.c)** Shows max number of sockets `select()` can handle.
 
 ## Chapter 14
 
