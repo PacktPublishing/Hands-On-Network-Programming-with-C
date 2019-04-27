@@ -122,7 +122,6 @@ struct client_info *get_client(SOCKET s) {
     n->address_length = sizeof(n->address);
     n->next = clients;
     clients = n;
-    printf("New client %p\n", n);
     return n;
 }
 
