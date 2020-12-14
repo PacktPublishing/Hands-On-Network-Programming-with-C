@@ -1,3 +1,8 @@
+## $5 Tech Unlocked 2021!
+[Buy and download this Book for only $5 on PacktPub.com](https://www.packtpub.com/product/hands-on-network-programming-with-c/9781789349863)
+-----
+*If you have read this book, please leave a review on [Amazon.com](https://www.amazon.com/gp/product/1789349869).     Potential readers can then use your unbiased opinion to help them make purchase decisions. Thank you. The $5 campaign         runs from __December 15th 2020__ to __January 13th 2021.__*
+
 # Hands-On Network Programming with C
 
 <a href="https://www.amazon.com/exec/obidos/ASIN/1789349869/aoeu-20"><img src="https://handsonnetworkprogramming.com/processed_images/d68715e4b29b3b9f00.png" alt="Hands-On Network Programming with C" height="256px" align="right"></a>
