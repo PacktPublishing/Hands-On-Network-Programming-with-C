@@ -17,8 +17,7 @@ set(msvc "$<COMPILE_LANG_AND_ID:C,CXX,MSVC>")
 target_compile_options(
         "${PROJECT_LOWER_NAME}_compiler_flags"
         INTERFACE
-        "$<${gcc_like}:$<BUILD_INTERFACE:-Wshadow;-Wformat=2;-Wall;-Wunused-macros;-pedantic>>"
-        # "-Wgnu-zero-variadic-macro-arguments"
+        "$<${gcc_like}:$<BUILD_INTERFACE:-Wshadow;-Wformat=2;-Wall;-pedantic>>"
         "$<${msvc}:$<BUILD_INTERFACE:-W3;-WX;-Zi;-permissive->>"
 )
 

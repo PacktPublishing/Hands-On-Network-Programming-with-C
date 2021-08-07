@@ -44,7 +44,7 @@ foreach(EXEC_NAME "${_targets}")
     list(APPEND installable_libs "${DEPENDANT_LIBRARY}")
   endif ()
   install(TARGETS ${installable_libs}
-          DESTINATION "bin"
+          DESTINATION "bin/"
           EXPORT "${TARGET_NAME}Targets")
 
 endforeach (EXEC_NAME)

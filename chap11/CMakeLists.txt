@@ -41,8 +41,8 @@ foreach(EXEC_NAME "ssh_auth" "ssh_command" "ssh_connect" "ssh_download" "ssh_ver
     list(APPEND installable_libs "${DEPENDANT_LIBRARY}")
   endif ()
   install(TARGETS ${installable_libs}
-          DESTINATION "bin"
+          DESTINATION "bin/"
           EXPORT "${TARGET_NAME}Targets")
 endforeach (EXEC_NAME)
 
-install(FILES "${Header_Files}" DESTINATION "include")
+install(FILES "${Header_Files}" DESTINATION "include/")

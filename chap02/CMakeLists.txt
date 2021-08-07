@@ -37,7 +37,7 @@ foreach(EXEC_NAME "sock_init" "time_console" "time_server" "time_server_dual" "t
     list(APPEND installable_libs "${DEPENDANT_LIBRARY}")
   endif ()
   install(TARGETS ${installable_libs}
-          DESTINATION "bin"
+          DESTINATION "bin/"
           EXPORT "${TARGET_NAME}Targets")
 
 endforeach (EXEC_NAME)
