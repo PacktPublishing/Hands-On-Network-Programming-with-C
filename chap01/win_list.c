@@ -32,9 +32,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#pragma comment(lib, "ws2_32.lib")
-#pragma comment(lib, "iphlpapi.lib")
-
 int main() {
 
     WSADATA d;

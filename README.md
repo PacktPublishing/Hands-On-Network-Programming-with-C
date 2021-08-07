@@ -146,6 +146,17 @@ Instructions for installing all of the require software are provided in the the 
 
 No non-free software is required to follow along with any of the examples in this book.
 
+### `cmake`
+[CMake](https://cmake.org) simplifies IDE integration, cross-platform build generation and triggering. After [installing](https://cmake.org/download), use like:
+```sh
+$ mkdir build
+$ cd build
+$ cmake ..
+$ cmake --build .
+```
+
+Many IDEs have integration with CMake, exposing a run dialog like:
+![targets dropdown](https://repository-images.githubusercontent.com/393677854/18049e0c-380f-4424-a695-8c744f13532d)
 
 ## Get to Know the Author
 **Lewis Van Winkle** is a software programming consultant, entrepreneur, and founder of a successful IoT company. He has over 20 years of programming experience after publishing his first successful software product at age twelve. He has over 15 years of programming experience with the C programming language on a variety of operating systems and platforms. He is active in the open-source community and has published several popular open-source programs and libraries, many of them in C. Today, Lewis spends much of his time consulting, where he loves taking on difficult projects that other programmers have given up on. He specializes in network systems, financial systems, machine learning, and interoperation between different programming languages.

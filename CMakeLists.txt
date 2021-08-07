@@ -41,10 +41,21 @@ configure_file(
         "config/${PROJECT_NAME}Config.h"
 )
 
-foreach(chapter RANGE 1 2)
-    add_subdirectory("chap0${chapter}")
-    message(STATUS "Built chap0${chapter}")
+foreach(chapter RANGE 1 13)
+    if(chapter LESS 10)
+        set(chapter "0${chapter}")
+    endif()
+    if(chapter EQUAL 12)
+        continue ()
+    endif ()
+    add_subdirectory("chap${chapter}")
+    message(STATUS "Built chap${chapter}")
 endforeach ()
+
+if (BUILD_TESTS)
+    add_subdirectory("test")
+    message(STATUS "test")
+endif ()
 
 #set_target_properties(
 #        "${PROJECT_NAME}"

@@ -1,19 +1,17 @@
 get_filename_component(DIR_NAME "${CMAKE_CURRENT_SOURCE_DIR}" NAME)
 string(REPLACE " " "_" DIR_NAME "${DIR_NAME}")
 
-if (WIN32)
-  set(_targets "win_init" "win_list")
-else ()
-  set(_targets "unix_list")
-endif ()
+set(Header_Files "chap13.h")
+source_group("Header Files" FILES "${Header_Files}")
 
-foreach(EXEC_NAME "${_targets}")
+foreach(EXEC_NAME "big_send" "connect_blocking" "connect_timeout" "error_text"
+                  "server_crash" "server_ignore" "server_noreuse" "setsize")
 
   set(Source_Files "${EXEC_NAME}.c")
   source_group("Source Files" FILES "${Source_Files}")
 
   set(TARGET_NAME "${DIR_NAME}_${EXEC_NAME}")
-  add_executable("${TARGET_NAME}" "${Source_Files}")
+  add_executable("${TARGET_NAME}" "${Header_Files}" "${Source_Files}")
 
   target_include_directories(
           "${TARGET_NAME}"
@@ -24,7 +22,7 @@ foreach(EXEC_NAME "${_targets}")
 
   target_link_libraries("${TARGET_NAME}" INTERFACE "${PROJECT_LOWER_NAME}_compiler_flags")
   if (WIN32)
-    target_link_libraries("${TARGET_NAME}" PRIVATE wsock32 ws2_32 iphlpapi)
+    target_link_libraries("${TARGET_NAME}" PRIVATE wsock32 ws2_32)
   endif ()
 
   set_target_properties(
@@ -46,6 +44,6 @@ foreach(EXEC_NAME "${_targets}")
   install(TARGETS ${installable_libs}
           DESTINATION "bin"
           EXPORT "${TARGET_NAME}Targets")
-
 endforeach (EXEC_NAME)
 
+install(FILES "${Header_Files}" DESTINATION "include")

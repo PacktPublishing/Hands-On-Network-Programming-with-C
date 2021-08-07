@@ -3,41 +3,41 @@ string(REPLACE " " "_" DIR_NAME "${DIR_NAME}")
 foreach(EXEC_NAME "sock_init" "time_console" "time_server" "time_server_dual" "time_server_ipv6")
 
   set(Source_Files "${EXEC_NAME}.c")
-  set(EXEC_NAME "${DIR_NAME}_${EXEC_NAME}")
   source_group("Source Files" FILES "${Source_Files}")
 
-  add_executable("${EXEC_NAME}" "${Source_Files}")
+  set(TARGET_NAME "${DIR_NAME}_${EXEC_NAME}")
+  add_executable("${TARGET_NAME}" "${Source_Files}")
 
   target_include_directories(
-          "${EXEC_NAME}"
+          "${TARGET_NAME}"
           INTERFACE
           "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
           "$<INSTALL_INTERFACE:include>"
   )
 
-  target_link_libraries("${EXEC_NAME}" INTERFACE "${PROJECT_LOWER_NAME}_compiler_flags")
+  target_link_libraries("${TARGET_NAME}" INTERFACE "${PROJECT_LOWER_NAME}_compiler_flags")
   if (WIN32)
-    target_link_libraries("${EXEC_NAME}" PRIVATE wsock32 ws2_32)
+    target_link_libraries("${TARGET_NAME}" PRIVATE wsock32 ws2_32)
   endif ()
 
   set_target_properties(
-          "${EXEC_NAME}"
+          "${TARGET_NAME}"
           PROPERTIES
           LINKER_LANGUAGE
           C
   )
 
   # setup the version numbering
-  #set_property(TARGET "${EXEC_NAME}" PROPERTY VERSION "1.0.0")
-  #set_property(TARGET "${EXEC_NAME}" PROPERTY SOVERSION "1")
+  #set_property(TARGET "${TARGET_NAME}" PROPERTY VERSION "1.0.0")
+  #set_property(TARGET "${TARGET_NAME}" PROPERTY SOVERSION "1")
 
   # install rules
-  set(installable_libs "${EXEC_NAME}" "${PROJECT_LOWER_NAME}_compiler_flags")
+  set(installable_libs "${TARGET_NAME}" "${PROJECT_LOWER_NAME}_compiler_flags")
   if (TARGET "${DEPENDANT_LIBRARY}")
     list(APPEND installable_libs "${DEPENDANT_LIBRARY}")
   endif ()
   install(TARGETS ${installable_libs}
           DESTINATION "bin"
-          EXPORT "${EXEC_NAME}Targets")
+          EXPORT "${TARGET_NAME}Targets")
 
 endforeach (EXEC_NAME)
