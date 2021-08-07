@@ -1,0 +1,9 @@
+#ifndef HANDS_ON_NET_PROGRAMMING_CONFIG_H
+#define HANDS_ON_NET_PROGRAMMING_CONFIG_H
+
+/* the configured options and settings for hands_on_net_programming */
+#define HANDS_ON_NET_PROGRAMMING_VERSION_MAJOR @hands_on_net_programming_VERSION_MAJOR@
+#define HANDS_ON_NET_PROGRAMMING_VERSION_MINOR @hands_on_net_programming_VERSION_MINOR@
+#define HANDS_ON_NET_PROGRAMMING_VERSION_PATCH @hands_on_net_programming_VERSION_PATCH@
+
+#endif /* HANDS_ON_NET_PROGRAMMING_CONFIG_H */
